@@ -7,6 +7,8 @@ from pathlib import Path
 
 img_path = Path(__file__).parents[1] / 'streamlit/images/NextBigThingHeader.png'
 
+st.write(img_path)
+
 image = Image.open(img_path)
 
 # import import_ipynb
