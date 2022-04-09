@@ -5,54 +5,54 @@ from PIL import Image
 
 from pathlib import Path
 
+from nbt_utils import get_wikipedia_search_results, get_stanza_dict_of_first_sentence, get_category_from_search_term, graph_sent, get_first_unambiguous_wiki_term_and_page
+
+
+
+# https://stackoverflow.com/questions/69768380/share-streamlit-cant-find-pkl-file
 img_path = Path(__file__).parents[1] / 'streamlit/images/NextBigThingHeader.png'
-
-st.write(img_path)
-
 image = Image.open(img_path)
 
-# import import_ipynb
-# import find_category_from_thing_final as fc
-# from nbt_utils import hello, graph_sent, get_wikipedia_search_results
 
-st.title('Next Big Thing!!')
 st.image(image, caption='The Thing vs The Thing vs Thing')
 
 st.markdown("""Find the next big thing!""")
 
 nbt_input = st.text_input('Find the next big thing like...', 'type here')
 
-# list_of_choices = get_wikipedia_search_results(nbt_input)
-# list_of_choices.insert(0, 'Select one')
-# print(list_of_choices)
+list_of_choices = get_wikipedia_search_results(nbt_input)
+list_of_choices.insert(0, 'Select one')
+print(list_of_choices)
 
 
-# if nbt_input not in ['type here', '']:
+if nbt_input not in ['type here', '']:
 
-#     wiki_selection = st.selectbox(
-#     'Can you please narrow down your query?',
-#     list_of_choices)
+    wiki_selection = st.selectbox(
+    'Can you please narrow down your query?',
+    list_of_choices)
 
-#     st.write('You selected:', wiki_selection)
+    st.write('You selected:', wiki_selection)
 
-#     if wiki_selection != 'Select one':
-#         #Get category
-#         category = fc.get_category_from_search_term(wiki_selection)
-#         #print(category)
+    if wiki_selection != 'Select one':
+        #Get category
+        nlp_category_phrase, expanded_year_wiki_cats, best_wiki_cats, first_wiki_term = get_category_from_search_term(wiki_selection)
+        #print(category)
 
-#         #Get subreddits
+        #Get subreddits
 
-#         #Get influencers
+        #Get influencers
 
-#         #Get relevant influencers posts
+        #Get relevant influencers posts
 
-#         #Extract relevant phrases to category
+        #Extract relevant phrases to category
 
-#         #Select final answer
+        #Select final answer
 
-#         #nbt = 'next big thing'
-#         nbt = category[0]
+        #nbt = 'next big thing'
 
-#         length = len(nbt_input)
 
-#         st.write('"',' '.join(category),'"', ' is the category of the next big:', wiki_selection, length)
+        st.write('"',' '.join(nlp_category_phrase),'"', ' is the NLP category of the next big:', wiki_selection)
+
+        first_wiki_term, wiki_page = get_first_unambiguous_wiki_term_and_page(wiki_selection)
+     
+        st.graphviz_chart(graph_sent(get_stanza_dict_of_first_sentence(wiki_page.summary)), use_container_width=False)
