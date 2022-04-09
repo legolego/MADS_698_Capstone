@@ -40,6 +40,7 @@ if nbt_input not in ['type here', '']:
     if wiki_selection != 'Select one':
         #Get category
         nlp_category_phrase, expanded_year_wiki_cats, best_wiki_cats, first_wiki_term = get_category_from_search_term(wiki_selection)
+        first_wiki_term, wiki_page = get_first_unambiguous_wiki_term_and_page(wiki_selection)
         #print(category)
 
         #Get subreddits
@@ -57,7 +58,12 @@ if nbt_input not in ['type here', '']:
 
         st.write('"',' '.join(nlp_category_phrase),'"', ' is the NLP category of the next big:', wiki_selection)
 
-        first_wiki_term, wiki_page = get_first_unambiguous_wiki_term_and_page(wiki_selection)
+        st.markdown("The first sentence from wikipedia is:", wiki_page.summary)
+
+        st.write("Chase the arrow to expand the image of the word dependencies below. ----->")
+        
+
+        
 
         
      
