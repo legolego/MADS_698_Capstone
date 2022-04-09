@@ -18,6 +18,10 @@ st.image(image, caption='The Thing vs The Thing vs Thing')
 
 st.markdown("""Find the next big thing!""")
 
+
+#st.write(get_stanza_dict_of_first_sentence("This is a senetce.").text)
+
+
 nbt_input = st.text_input('Find the next big thing like...', 'type here')
 
 list_of_choices = get_wikipedia_search_results(nbt_input)
@@ -54,5 +58,7 @@ if nbt_input not in ['type here', '']:
         st.write('"',' '.join(nlp_category_phrase),'"', ' is the NLP category of the next big:', wiki_selection)
 
         first_wiki_term, wiki_page = get_first_unambiguous_wiki_term_and_page(wiki_selection)
+
+        
      
         st.graphviz_chart(graph_sent(get_stanza_dict_of_first_sentence(wiki_page.summary)), use_container_width=False)

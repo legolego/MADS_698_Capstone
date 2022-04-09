@@ -46,7 +46,7 @@ def graph_sent(sent_dict):
         if word['upos'] != 'PUNCT':
             if word['head'] == 0:
                 root_id = str(word['id']) 
-            id_word[str(word['id'])] = str(word['id']) + ':' + word['text']
+            id_word[str(word['id'])] = str(word['id']) + ':' + word['text'] + '(' + word['upos'] + ')' 
 
     # Create Digraph object
     sent_tree = graphviz.Digraph()
