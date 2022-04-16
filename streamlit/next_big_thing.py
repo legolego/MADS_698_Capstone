@@ -22,7 +22,7 @@ st.sidebar.markdown("Want to find the next big thing like Squid Game? or Dogecoi
 st.sidebar.subheader("Contributors")
 st.sidebar.markdown("Oleg Nikolsky, Kim Di Camillo, Cody Crow")
 
-git_url = https://github.com/legolego/MADS_698_Capstone
+git_url = 'https://github.com/legolego/MADS_698_Capstone'
 st.sidebar.markdown("Source Code on Github [link](%s)" % git_url)
 
 
