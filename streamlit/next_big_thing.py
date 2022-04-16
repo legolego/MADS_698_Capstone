@@ -6,7 +6,9 @@ from PIL import Image
 
 from pathlib import Path
 
-from nbt_utils import get_wikipedia_search_results, get_stanza_dict_of_first_sentence, get_category_from_search_term, graph_sent, get_first_unambiguous_wiki_term_and_page
+from nbt_utils import get_wikipedia_search_results, get_category_from_search_term, graph_sent, get_first_unambiguous_wiki_term_and_page
+
+#get_stanza_dict_of_first_sentence, 
 
 from nbt_utils import get_mvp_terms
 
