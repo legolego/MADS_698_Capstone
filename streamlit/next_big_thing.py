@@ -16,30 +16,36 @@ from nbt_utils import *
 img_path = Path(__file__).parents[1] / 'streamlit/images/NextBigThingHeader.png'
 image = Image.open(img_path)
 
-st.sidebar.markdown("Next Big Thing")
+st.sidebar.subheader("Next Big Thing")
+st.sidebar.markdown("about")
+st.sidebar.subheader("Contributors")
+
 
 
 st.image(image, caption='The Thing vs The Thing vs Thing')
 
 #st.markdown("""Find the next big thing!!!""")
-st.header("Introduction")
+if st.button('Model'):
+     st.header('App Mode')
+ else:
+    st.header("Introduction")
 
-st.header("Step 1: Find Category from Thing")
-st.selectbox('Select a Thing', get_mvp_terms())  
-
-
-#st.write(get_stanza_dict_of_first_sentence("This is a senetce.").text)
-
-st.header("Step 2: Find Subreddits")
+    st.header("Step 1: Find Category from Thing")
+    st.selectbox('Select a Thing', get_mvp_terms())  
 
 
-st.header("Step 3: Find Influencers")
+    #st.write(get_stanza_dict_of_first_sentence("This is a senetce.").text)
+
+    st.header("Step 2: Find Subreddits")
 
 
-st.header("Step 4: Find Influencer Relevevant Posts")
+    st.header("Step 3: Find Influencers")
 
 
-st.header("Step 5: Find Next Big Thing")
+    st.header("Step 4: Find Influencer Relevevant Posts")
+
+
+    st.header("Step 5: Find Next Big Thing")
 
 
 
