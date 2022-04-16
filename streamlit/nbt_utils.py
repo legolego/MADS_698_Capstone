@@ -24,6 +24,7 @@ import pickle
 import pandas as pd
 import datetime as dt
 import os
+from pathlib import Path
 import re
 import requests
 import time
@@ -31,7 +32,8 @@ from collections import Counter
 
 
 def get_mvp_terms:
-    file_list = os.listdir("/work/MADS_698_Capstone/output_step5/")
+    file_path = Path(__file__).parents[1] / 'output_step5/'
+    file_list = os.listdir(file_path)
     term_list = []
     for f in file_list:
         if f.startswith("crf_results_"):

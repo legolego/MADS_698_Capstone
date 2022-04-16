@@ -1,0 +1,6 @@
+streamlit/__pychache__/*
+streamlit/__*
+apicache-py3/*
+throttle.ctrl
+pywikibot.lwp
+config.py
