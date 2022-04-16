@@ -18,14 +18,19 @@ image = Image.open(img_path)
 
 st.sidebar.subheader("Next Big Thing")
 st.sidebar.markdown("about")
-st.sidebar.subheader("Contributors")
 
+st.sidebar.subheader("Contributors")
+st.sidebar.markdown("Oleg Nikolsky, Kim Di Camillo, Cody Crow")
+
+mode = st.radio(
+     "Try out the App",
+     ('Blog Mode', 'App Mode'))
 
 
 st.image(image, caption='The Thing vs The Thing vs Thing')
 
 #st.markdown("""Find the next big thing!!!""")
-if st.button('Model'):
+if mode = "App Mode":
      st.header('App Mode')
 else:
     st.header("Introduction")
@@ -37,7 +42,7 @@ else:
     #st.write(get_stanza_dict_of_first_sentence("This is a senetce.").text)
 
     st.header("Step 2: Find Subreddits")
-
+    st.markdown("step 2")
 
     st.header("Step 3: Find Influencers")
 
