@@ -30,7 +30,7 @@ mode = st.radio(
 st.image(image, caption='The Thing vs The Thing vs Thing')
 
 #st.markdown("""Find the next big thing!!!""")
-if mode = "App Mode":
+if mode == "App Mode":
      st.header('App Mode')
 else:
     st.header("Introduction")
