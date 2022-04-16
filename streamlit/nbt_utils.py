@@ -21,15 +21,22 @@ model = SentenceTransformer('all-MiniLM-L12-v2')
 
 import numpy as np
 import pickle
-
+import pandas as pd
 import datetime as dt
-
+import os
 import re
 import requests
 import time
 from collections import Counter
 
 
+def get_mvp_terms:
+    file_list = os.listdir("/work/MADS_698_Capstone/output_step5/")
+    term_list = []
+    for f in file_list:
+        if f.startswith("crf_results_"):
+            term_list.append(f.rstrip(".csv").lstrip("crf_results_").replace("_"," "))
+    return pd.Series(term_list)
 
 
 
