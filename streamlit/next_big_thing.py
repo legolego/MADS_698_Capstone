@@ -19,7 +19,7 @@ st.image(image, caption='The Thing vs The Thing vs Thing')
 
 st.markdown("""Find the next big thing!!!""")
 
-st.selectbox('Select a Thing', get_mvp_terms())  
+#st.selectbox('Select a Thing', get_mvp_terms())  
 
 
 #st.write(get_stanza_dict_of_first_sentence("This is a senetce.").text)
