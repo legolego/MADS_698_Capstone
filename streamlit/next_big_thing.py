@@ -10,7 +10,7 @@ from pathlib import Path
 
 #get_stanza_dict_of_first_sentence, 
 
-from nbt_utils import *
+#from nbt_utils import *
 
 # https://stackoverflow.com/questions/69768380/share-streamlit-cant-find-pkl-file
 img_path = Path(__file__).parents[1] / 'streamlit/images/NextBigThingHeader.png'
