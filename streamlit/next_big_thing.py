@@ -16,19 +16,35 @@ from nbt_utils import *
 img_path = Path(__file__).parents[1] / 'streamlit/images/NextBigThingHeader.png'
 image = Image.open(img_path)
 
+st.sidebar.markdown("Next Big Thing")
+
 
 st.image(image, caption='The Thing vs The Thing vs Thing')
 
-st.markdown("""Find the next big thing!!!""")
+#st.markdown("""Find the next big thing!!!""")
+st.header("Introduction")
 
+st.header("Step 1: Find Category from Thing")
 st.selectbox('Select a Thing', get_mvp_terms())  
 
-st.sidebar.markdown("Next Big Thing")
 
 #st.write(get_stanza_dict_of_first_sentence("This is a senetce.").text)
 
+st.header("Step 2: Find Subreddits")
 
-nbt_input = st.text_input('Find the next big thing like...', 'type here')
+
+st.header("Step 3: Find Influencers")
+
+
+st.header("Step 4: Find Influencer Relevevant Posts")
+
+
+st.header("Step 5: Find Next Big Thing")
+
+
+
+
+#nbt_input = st.text_input('Find the next big thing like...', 'type here')
 
 #list_of_choices = get_wikipedia_search_results(nbt_input)
 #list_of_choices.insert(0, 'Select one')
