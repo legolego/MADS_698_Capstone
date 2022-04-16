@@ -16,27 +16,32 @@ from nbt_utils import get_mvp_terms
 img_path = Path(__file__).parents[1] / 'streamlit/images/NextBigThingHeader.png'
 image = Image.open(img_path)
 
-st.sidebar.subheader("Next Big Thing")
-st.sidebar.markdown("about")
+st.sidebar.subheader("About")
+st.sidebar.markdown("Want to find the next big thing like Squid Game? or Dogecoin? Our application will filter through Reddit to find the next big thing like something you're interested in.")
 
 st.sidebar.subheader("Contributors")
 st.sidebar.markdown("Oleg Nikolsky, Kim Di Camillo, Cody Crow")
 
-mode = st.radio(
-     "Try out the App",
-     ('Blog Mode', 'App Mode'))
+git_url = https://github.com/legolego/MADS_698_Capstone
+st.sidebar.markdown("Source Code on Github [link](%s)" % git_url)
 
 
 st.image(image, caption='The Thing vs The Thing vs Thing')
 
 #st.markdown("""Find the next big thing!!!""")
+
+mode = st.radio(
+     "Try out the App",
+     ('Blog Mode', 'App Mode'))
+
 if mode == "App Mode":
      st.header('App Mode')
+     term = st.selectbox('Select a Thing', get_mvp_terms())
 else:
     st.header("Introduction")
 
     st.header("Step 1: Find Category from Thing")
-    st.selectbox('Select a Thing', get_mvp_terms())  
+      
 
 
     #st.write(get_stanza_dict_of_first_sentence("This is a senetce.").text)
