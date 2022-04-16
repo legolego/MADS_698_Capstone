@@ -31,7 +31,7 @@ import time
 from collections import Counter
 
 
-def get_mvp_terms:
+def get_mvp_terms():
     file_path = Path(__file__).parents[1] / 'output_step5/'
     file_list = os.listdir(file_path)
     term_list = []

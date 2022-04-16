@@ -10,7 +10,7 @@ from pathlib import Path
 
 #get_stanza_dict_of_first_sentence, 
 
-#from nbt_utils import *
+from nbt_utils import *
 
 # https://stackoverflow.com/questions/69768380/share-streamlit-cant-find-pkl-file
 img_path = Path(__file__).parents[1] / 'streamlit/images/NextBigThingHeader.png'
@@ -21,8 +21,9 @@ st.image(image, caption='The Thing vs The Thing vs Thing')
 
 st.markdown("""Find the next big thing!!!""")
 
-#st.selectbox('Select a Thing', get_mvp_terms())  
+st.selectbox('Select a Thing', get_mvp_terms())  
 
+st.sidebar.markdown("Next Big Thing")
 
 #st.write(get_stanza_dict_of_first_sentence("This is a senetce.").text)
 
