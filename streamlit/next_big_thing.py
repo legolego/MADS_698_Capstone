@@ -13,7 +13,8 @@ from pathlib import Path
 from nbt_utils import get_mvp_terms
 
 # https://stackoverflow.com/questions/69768380/share-streamlit-cant-find-pkl-file
-image_header = Image.open(Path(__file__).parents[1] / 'streamlit/images/NextBigThingHeader.png')
+image_header_path = Path(__file__).parents[1] / 'streamlit/images/NextBigThingHeader.png'
+image_header = Image.open(image_header_path)
 #image_light_bulb = Image.open(Path(__file__).parents[1] / 'streamlit/images/lightbulb.png')
 
 #st.sidebar.image(image_light_bulb)
@@ -30,7 +31,7 @@ mode = st.sidebar.radio(
 
 st.sidebar.markdown('##')
 git_url = 'https://github.com/legolego/MADS_698_Capstone'
-st.sidebar.markdown("Source Code on Github [link](%s)" % git_url)
+st.sidebar.markdown("Source Code on [Github](%s)" % git_url)
 
 
 st.image(image_header, caption='The Thing vs The Thing vs Thing')
