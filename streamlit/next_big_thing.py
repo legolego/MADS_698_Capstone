@@ -13,14 +13,11 @@ from pathlib import Path
 from nbt_utils import get_mvp_terms
 
 # https://stackoverflow.com/questions/69768380/share-streamlit-cant-find-pkl-file
-#image_header_path = Path(__file__).parents[1] / 'streamlit/images/NextBigThingHeader.png'
-#image_header = Image.open(image_header_path)
-#image_light_bulb = Image.open(Path(__file__).parents[1] / 'streamlit/images/lightbulb.png')
+img_path = Path(__file__).parents[1] / 'streamlit/images/NextBigThingHeader.png'
+image = Image.open(img_path)
 
-#st.sidebar.image(image_light_bulb)
-#st.sidebar.markdown('##')
 st.sidebar.subheader("About")
-st.sidebar.markdown("Want to find the next big thing like Squid Game? or Dogecoin? Our application will filter through recent Reddit posts and comments and give a suggestion of the Next Big Thing.")
+st.sidebar.markdown("Want to find the next big thing like Squid Game? or Dogecoin? Our application will filter through Reddit to find the next big thing like something you're interested in.")
 st.sidebar.markdown('##')
 st.sidebar.subheader("Contributors")
 st.sidebar.markdown("Oleg Nikolsky, Kim Di Camillo, Cody Crow")
@@ -31,10 +28,10 @@ mode = st.sidebar.radio(
 
 st.sidebar.markdown('##')
 git_url = 'https://github.com/legolego/MADS_698_Capstone'
-st.sidebar.markdown("Source Code on [Github](%s)" % git_url)
+st.sidebar.markdown("Source Code on Github [link](%s)" % git_url)
 
 
-st.image(image_header, caption='The Thing vs The Thing vs Thing')
+st.image(image, caption='The Thing vs The Thing vs Thing')
 
 #st.markdown("""Find the next big thing!!!""")
 
