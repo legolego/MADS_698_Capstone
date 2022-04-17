@@ -13,12 +13,12 @@ from pathlib import Path
 from nbt_utils import get_mvp_terms
 
 # https://stackoverflow.com/questions/69768380/share-streamlit-cant-find-pkl-file
-image_header_path = Path(__file__).parents[1] / 'streamlit/images/NextBigThingHeader.png'
-image_header = Image.open(image_header_path)
+#image_header_path = Path(__file__).parents[1] / 'streamlit/images/NextBigThingHeader.png'
+#image_header = Image.open(image_header_path)
 #image_light_bulb = Image.open(Path(__file__).parents[1] / 'streamlit/images/lightbulb.png')
 
 #st.sidebar.image(image_light_bulb)
-st.sidebar.markdown('##')
+#st.sidebar.markdown('##')
 st.sidebar.subheader("About")
 st.sidebar.markdown("Want to find the next big thing like Squid Game? or Dogecoin? Our application will filter through recent Reddit posts and comments and give a suggestion of the Next Big Thing.")
 st.sidebar.markdown('##')
