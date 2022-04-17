@@ -18,10 +18,15 @@ image = Image.open(img_path)
 
 st.sidebar.subheader("About")
 st.sidebar.markdown("Want to find the next big thing like Squid Game? or Dogecoin? Our application will filter through Reddit to find the next big thing like something you're interested in.")
-
+st.sidebar.markdown('##')
 st.sidebar.subheader("Contributors")
 st.sidebar.markdown("Oleg Nikolsky, Kim Di Camillo, Cody Crow")
+st.sidebar.markdown('##')
+mode = st.sidebar.radio(
+     "Try out the App",
+     ('Blog Mode', 'App Mode'))
 
+st.sidebar.markdown('##')
 git_url = 'https://github.com/legolego/MADS_698_Capstone'
 st.sidebar.markdown("Source Code on Github [link](%s)" % git_url)
 
@@ -30,9 +35,6 @@ st.image(image, caption='The Thing vs The Thing vs Thing')
 
 #st.markdown("""Find the next big thing!!!""")
 
-mode = st.radio(
-     "Try out the App",
-     ('Blog Mode', 'App Mode'))
 
 if mode == "App Mode":
      st.header('App Mode')
