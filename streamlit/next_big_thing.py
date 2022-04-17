@@ -49,8 +49,7 @@ else:
     #st.write(get_stanza_dict_of_first_sentence("This is a senetce.").text)
 
     st.header("Step 2: Find Subreddits")
-    st.markdown("step 2")
-
+    
     st.header("Step 3: Find Influencers")
 
 
