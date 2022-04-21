@@ -19,7 +19,7 @@ Our project uses the following tools. We have included some links to the documen
 
 | Tool | Use | Link |
 | ------ | ------ | ------ |
-| Reddit | Main data source. APIs to access subreddit, submission, comment, and user data | https://praw.readthedocs.io/en/latest/getting_started/quick_start.html https://github.com/pushshift/api https://github.com/mattpodolak/pmaw#description |
+| Reddit | Main data source. APIs to access subreddit, submission, comment, and user data | https://praw.readthedocs.io/en/stable/ https://github.com/pushshift/api https://github.com/mattpodolak/pmaw#description |
 | Wikipedia | Content source for siblings and training data | https://github.com/goldsmith/Wikipedia |
 | Wikipedia API | Wikipedia category members | https://github.com/martin-majlis/Wikipedia-API |
 | Pywikibot | Wikipedia category hierarchy  | https://www.mediawiki.org/wiki/Manual:Pywikibot |
@@ -30,9 +30,6 @@ Our project uses the following tools. We have included some links to the documen
 | Graphviz | Visualization of the dependency structure of parsed sentences | https://graphviz.org/ |
 | Wordcloud | Visualization of final output | https://amueller.github.io/word_cloud/ |
  
-
-
-
 ### Reddit API Setup
 We have created a user specifically for this project that is usable by others, but to avoid overlapping result sets you will probably want to set up your own Reddit account and register your own app. This can be done here:
 [Reddit API Access](https://www.reddit.com/wiki/api) 
@@ -69,17 +66,33 @@ We also have a notebook that runs the code in a more modular fashion, allowing y
 3. Go to the "What are we finding the Next Big Thing of?" secton and set the variable `term` to the item you are interested in
 4. Run the notebook step by step, or all at once
  
+#### Other Execution Notes
+While testing the project we sometimes had trouble with the 5GB RAM limit on our free instance of Deepnote. The code would often have a memory issue while in Step 5. If this happens you can use the following workaround:
+1. Open `NBT_Pipeline.ipynb`
+2. Run the import statement in the "Standard Python Library Imports" section
+3. Run the Step 5 import:
+   ```
+   import Step5_CRF_Find_New_Terms as crfnt
+   ```
+4. Edit the following line in the "Identify Next Big Thing" section:
+   ```
+   df_final = crfnt.calculate_final_results_for_wiki_term(wiki_term, mvp_flag)
+   ```
+   to read:
+   ```
+   df_final = crfnt.calculate_final_results_for_wiki_term('your wiki term', False)
+   ```
+You can find the value of 'your_wiki_term' for your item in the last cell of the "Get initial Wikipedia data about our user entry" section.
+   
+5. Execute the cell block you just changed and the remaining cells in the notebook
 
+# Streamlit Application
+We published an application in Streamlit where you can see the results for pre-generated examples such as Squid Game, Dogecoin, Elon Musk and more. There is also a blog we wrote describing our project and results. You can check it out here:
+[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://90b052a7-f47d-474e-888f-9345355cfd9a.deepnoteproject.com/)
 
 # Explain the MVP Flag
-# Explain the Streamlit code
-# link to the Streamlit app/blog
+
 # Discuss output
-
-
-
-
-
 
 
 
