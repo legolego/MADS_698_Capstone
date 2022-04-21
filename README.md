@@ -48,30 +48,30 @@ For simplicity, the code is labeled with the step name:
 - `Step4_Find_Influencer_Relevant_Posts.ipynb`
 - `Step5_CRF_Find_New_Terms.ipynb`
 
-## Running the Next Big Thing
+# Running the Next Big Thing
 There are several ways you can run the tool:
 
-#### Single Function Execution
+### Single Function Execution
 A notebook with a single function has been created to run the full pipeline with a set of predefined parameters. Here are the required steps:
-1. Open `FUNCTION_NBT_Pipeline.ipynb` 
+1. Open `find_next_big_thing.ipynb` 
 2. Go to the "Call Next Big Thing Function" section
 3. Replace the existing item, 'Covid-19', with the item you are interested in
 4. Run the notebook 
 
 Note that a full run on the Next Big Thing usually takes between 2 and 3 hours to complete.
 
-#### Step-By-Step Execution
+### Step-By-Step Execution
 We also have a notebook that runs the code in a more modular fashion, allowing you to execute the 5 steps of the process separately. This version also allows you to change parameter values if you wish. Here are the required steps:
 1. Open `NBT_Pipeline.ipynb` 
 2. Go to the "Set Parameter Values" section and edit any parameter values that you would like to change. All parameters have comments describing what they are used for
 3. Go to the "What are we finding the Next Big Thing of?" secton and set the variable `term` to the item you are interested in
 4. Run the notebook step by step, or all at once
  
-#### Other Execution Notes
-##### MVP Flag
+### Other Execution Notes
+#### MVP Flag
 The project is designed to create output pickle files after Steps 2, 3, 4, and 5 to allow for modular runs and quick viewing of results that were previously run. This is done through the use of the mvp_flag. In most of our functions this flag is an input parameter and indicates if a previously generated pickle file should be used instead of generating new results. The pickle files are named based on the `wiki_term` generated in Step 1. If the flag is set to True, the function will look for a pickle file for that step containing the `wiki_term`.
 
-##### Workaround for Memory Issues
+#### Workaround for Memory Issues
 While testing the project we sometimes had trouble with the 5GB RAM limit on our free instance of Deepnote. The code would often have a memory issue while in Step 5. If this happens you can use the following workaround:
 1. Open `NBT_Pipeline.ipynb`
 2. Run the import statement in the "Standard Python Library Imports" section
@@ -91,7 +91,7 @@ While testing the project we sometimes had trouble with the 5GB RAM limit on our
    
 5. Execute the cell block you just changed and the remaining cells in the notebook
 
-## Next Big Thing Output
+# Next Big Thing Output
 The output of the tool is a list of the top 10 items currently being discussed on Reddit that are siblings of your original item entered. The data is also presented in a word cloud shaped as Snoo, Reddit's alien mascot. In the Snoo word cloud, all items found as part of the Conditional Random Field (CRF) model we employed are represented, with the size of the item indicating its frequency of occurrence.
 
 # Streamlit Application
