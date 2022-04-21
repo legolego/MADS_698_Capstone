@@ -5,7 +5,7 @@ Capstone project for University of Michigan's Master of Applied Data Science pro
 ### Clone the repo
 Clone this repository to get started.
 ```
-git clone https://github.com/legolego/MADS_698_Capstone
+git clone https://github.com/legolego/MADS_698_Capstone.git
 ```
 
 ### Prereqs
@@ -67,6 +67,10 @@ We also have a notebook that runs the code in a more modular fashion, allowing y
 4. Run the notebook step by step, or all at once
  
 #### Other Execution Notes
+##### MVP Flag
+The project is designed to create output pickle files after Steps 2, 3, 4, and 5 to allow for modular runs and quick viewing of results that were previously run. This is done through the use of the mvp_flag. In most of our functions this flag is an input parameter and indicates if a previously generated pickle file should be used instead of generating new results. The pickle files are named based on the `wiki_term` generated in Step 1. If the flag is set to True, the function will look for a pickle file for that step containing the `wiki_term`.
+
+##### Workaround for Memory Issues
 While testing the project we sometimes had trouble with the 5GB RAM limit on our free instance of Deepnote. The code would often have a memory issue while in Step 5. If this happens you can use the following workaround:
 1. Open `NBT_Pipeline.ipynb`
 2. Run the import statement in the "Standard Python Library Imports" section
@@ -80,21 +84,17 @@ While testing the project we sometimes had trouble with the 5GB RAM limit on our
    ```
    to read:
    ```
-   df_final = crfnt.calculate_final_results_for_wiki_term('your wiki term', False)
+   df_final = crfnt.calculate_final_results_for_wiki_term('your wiki_term', False)
    ```
-You can find the value of 'your_wiki_term' for your item in the last cell of the "Get initial Wikipedia data about our user entry" section.
+   You can find the value of `wiki_term` for your item in the last cell of the "Get initial Wikipedia data about our user entry" section.
    
 5. Execute the cell block you just changed and the remaining cells in the notebook
 
 # Streamlit Application
 We published an application in Streamlit where you can see the results for pre-generated examples such as Squid Game, Dogecoin, Elon Musk and more. There is also a blog we wrote describing our project and results. You can check it out here:
+
+## Next Big Thing Output
+The output of the tool is a list of the top 10 items currently being discussed on Reddit that are siblings of your original item entered. The data is also presented in a word cloud shaped as Snoo, Reddit's alien mascot. In the Snoo word cloud, all items found as part of the Conditional Random Field (CRF) model we employed are represented, with the size of the item indicating its frequency of occurrence.
+
 [![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://90b052a7-f47d-474e-888f-9345355cfd9a.deepnoteproject.com/)
-
-# Explain the MVP Flag
-
-# Discuss output
-
-
-
-
 
