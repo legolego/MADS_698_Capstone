@@ -32,6 +32,7 @@ Our project uses the following tools. We have included some links to the documen
  
 ### Reddit API Setup
 We have created a user specifically for this project that is usable by others, but to avoid overlapping result sets you will probably want to set up your own Reddit account and register your own app. This can be done here:
+
 [Reddit API Access](https://www.reddit.com/wiki/api) 
 
 Once you have your Reddit credentials you can replace ours with yours in the file `config.py`
@@ -54,7 +55,7 @@ There are several ways you can run the tool:
 A notebook with a single function has been created to run the full pipeline with a set of predefined parameters. Here are the required steps:
 1. Open `FUNCTION_NBT_Pipeline.ipynb` 
 2. Go to the "Call Next Big Thing Function" section
-3. Replace the existing item, Covid-19, with the item you are interested in
+3. Replace the existing item, 'Covid-19', with the item you are interested in
 4. Run the notebook 
 
 Note that a full run on the Next Big Thing usually takes between 2 and 3 hours to complete.
@@ -90,11 +91,11 @@ While testing the project we sometimes had trouble with the 5GB RAM limit on our
    
 5. Execute the cell block you just changed and the remaining cells in the notebook
 
-# Streamlit Application
-We published an application in Streamlit where you can see the results for pre-generated examples such as Squid Game, Dogecoin, Elon Musk and more. There is also a blog we wrote describing our project and results. You can check it out here:
-
 ## Next Big Thing Output
 The output of the tool is a list of the top 10 items currently being discussed on Reddit that are siblings of your original item entered. The data is also presented in a word cloud shaped as Snoo, Reddit's alien mascot. In the Snoo word cloud, all items found as part of the Conditional Random Field (CRF) model we employed are represented, with the size of the item indicating its frequency of occurrence.
+
+# Streamlit Application
+We published an application in Streamlit where you can see the results for pre-generated examples such as Squid Game, Dogecoin, Elon Musk and more. There is also a blog we wrote describing our project and results. You can check it out here:
 
 [![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://90b052a7-f47d-474e-888f-9345355cfd9a.deepnoteproject.com/)
 
