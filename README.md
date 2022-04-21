@@ -97,5 +97,5 @@ The output of the tool is a list of the top 10 items currently being discussed o
 # Streamlit Application
 We published an application in Streamlit where you can see the results for pre-generated examples such as Squid Game, Dogecoin, Elon Musk and more. There is also a blog we wrote describing our project and results. You can check it out here:
 
-[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://90b052a7-f47d-474e-888f-9345355cfd9a.deepnoteproject.com/)
+[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://share.streamlit.io/legolego/mads_698_capstone/main/streamlit/next_big_thing.py)
 
