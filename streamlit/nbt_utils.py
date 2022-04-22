@@ -5,7 +5,7 @@ import pandas as pd
 import datetime as dt
 import os
 from pathlib import Path
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 from wordcloud import WordCloud, STOPWORDS, ImageColorGenerator
 from PIL import Image
 import random
