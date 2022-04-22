@@ -3,16 +3,12 @@ import pandas as pd
 import streamlit as st
 import os
 from PIL import Image
-
 from pathlib import Path
 
-#from nbt_utils import get_wikipedia_search_results, get_category_from_search_term, graph_sent, get_first_unambiguous_wiki_term_and_page
+from nbt_utils import get_mvp_terms, make_wordcloud
 
-#get_stanza_dict_of_first_sentence, 
+CURRENT_THEME = "dark"
 
-from nbt_utils import get_mvp_terms
-
-# https://stackoverflow.com/questions/69768380/share-streamlit-cant-find-pkl-file
 img_path = Path(__file__).parents[1] / 'streamlit/images/NextBigThingHeader.png'
 image = Image.open(img_path)
 
@@ -28,86 +24,48 @@ mode = st.sidebar.radio(
 
 st.sidebar.markdown('##')
 git_url = 'https://github.com/legolego/MADS_698_Capstone'
-st.sidebar.markdown("Source Code on Github [link](%s)" % git_url)
+st.sidebar.markdown("Source Code on [Github](%s)" % git_url)
 
 
-st.image(image, caption='The Thing vs The Thing vs Thing')
-
-#st.markdown("""Find the next big thing!!!""")
-
+st.image(image, caption='The Thing vs The Thing vs Thingss')
 
 if mode == "App Mode":
-     st.header('App Mode')
-     term = st.selectbox('Select a Thing', get_mvp_terms())
+    st.header('App Mode')
+    term = st.selectbox('Select a Thing', get_mvp_terms())
+
+    term_edit = term.replace(" ","_")
+
+    term_location = Path(__file__).parents[1] / 'streamlit/example_output' / str('crf_results_' + term_edit + '.csv')
+    df_filepath = Path(__file__).parents[1] / term_location
+
+    results_df = pd.read_csv(df_filepath)
+
+    st.subheader('Top 10 Result Table for ' + term)    
+    df_top10_crf = results_df[["Entity", "CRF_Model_Found"]].dropna().astype({'CRF_Model_Found':'int'}).head(10)
+    df_top10_crf.columns = ['Next Big Thing?', 'Number Found']
+    st.table(df_top10_crf)
+
+    fig = make_wordcloud(results_df, title = 'Top CRF Results')
+    st.image(fig)
+    #st.pyplot(fig)
+
 else:
     st.header("Introduction")
 
     st.header("Step 1: Find Category from Thing")
       
-
-
-    #st.write(get_stanza_dict_of_first_sentence("This is a senetce.").text)
-
     st.header("Step 2: Find Subreddits")
     
     st.header("Step 3: Find Influencers")
 
+    st.markdown("Once we have our list of relevant subreddits, our next step was to find influential redditors\
+                (users of reddit) within those subreddits. We will not be concerned about the Thing in this step\
+                 - we will strictly be looking to find the redditors who would be talking about the Next Big Thing.")
 
+    st.markdown("Once we have our list of relevant subreddits, our next step was to find influential redditors\
+            (users of reddit) within those subreddits. We will not be concerned about the Thing in this step\
+                - we will strictly be looking to find the redditors who would be talking about the Next Big Thing.")
+    
     st.header("Step 4: Find Influencer Relevevant Posts")
 
-
     st.header("Step 5: Find Next Big Thing")
-
-
-
-
-#nbt_input = st.text_input('Find the next big thing like...', 'type here')
-
-#list_of_choices = get_wikipedia_search_results(nbt_input)
-#list_of_choices.insert(0, 'Select one')
-#print(list_of_choices)
-
-
-#if nbt_input not in ['type here', '']:
-
-    #wiki_selection = st.selectbox(
-    #'Can you please narrow down your query?',
-    #list_of_choices)
-
-    #st.write('You selected:', wiki_selection)
-
-    #if wiki_selection != 'Select one':
-        #Get category
-        #nlp_category_phrase, expanded_year_wiki_cats, best_wiki_cats, first_wiki_term = get_category_from_search_term(wiki_selection)
-        #first_wiki_term, wiki_page = get_first_unambiguous_wiki_term_and_page(wiki_selection)
-        #print(category)
-
-        #Get subreddits
-
-        #Get influencers
-
-        #Get relevant influencers posts
-
-        #Extract relevant phrases to category
-
-        #Select final answer
-
-        #nbt = 'next big thing'
-
-
-        #st.write('"',' '.join(nlp_category_phrase),'"', ' is the NLP category of the next big:', wiki_selection)
-
-        # st.markdown("The first sentence from wikipedia is:", wiki_page.summary)
-
-        #st.write("Chase the arrow to expand the image of the word dependencies below. ----->")
-        
-
-        
-
-        
-     
-        #st.graphviz_chart(graph_sent(get_stanza_dict_of_first_sentence(wiki_page.summary)), use_container_width=False)
-
-#st.write("Being unfamiliar with Reddit prior to this project, we were pretty shocked to realize the depth and reach of Reddit when considering using it for our master’s Capstone project. According to statistics from 2020 found in 10 Reddit Statistics Every Marketer Should Know, there are more than 52 million daily active Reddit users worldwide, many of whom are from the United States. In the US there are nearly 222 million monthly active users and 18% of American adults say they are Reddit users. What differentiates Reddit from other social media networks is its structure around communities, known as subreddits. All conversations on Reddit take place within a community with the intention that all posts and comments focus on the specific topic(s) that the subreddit was created for. This means that if you look at the activity within a subreddit, you can safely assume that it will focus on the content you care about. Reddit has moderators within each subreddit that enforce community rules, such as the type of posts that are and are not allowed, including staying on topic.")
-
-#st.write("CRF trained on whole corpus, not indiviudual wiki categories as some are too small, one a few articles")
