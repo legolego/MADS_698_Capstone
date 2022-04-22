@@ -1,4 +1,6 @@
 # Next Big Thing Capstone Project
+![NBT Logo](https://github.com/legolego/MADS_698_Capstone/blob/main/assets/NextBigThingLogoDraft1.png?raw=true) 
+
 Capstone project for University of Michigan's Master of Applied Data Science program created by Cody Crow, Kim Di Camillo and Oleg Nikolsky. Given a user-entered item, the tool we built mines Reddit data to identify what popular Redditors are currently discussing that are "like" the original item.
 
 # Getting Started
