@@ -1,5 +1,5 @@
 # Next Big Thing Capstone Project
-1Capstone project for University of Michigan's Master of Applied Data Science program created by Cody Crow, Kim Di Camillo and Oleg Nikolsky. Given a user-entered item, the tool we built mines Reddit data to identify what popular Redditors are currently discussing that are "like" the original item.
+Capstone project for University of Michigan's Master of Applied Data Science program created by Cody Crow, Kim Di Camillo and Oleg Nikolsky. Given a user-entered item, the tool we built mines Reddit data to identify what popular Redditors are currently discussing that are "like" the original item.
 
 # Getting Started
 ### Clone the repo
@@ -63,7 +63,7 @@ Note that a full run on the Next Big Thing usually takes between 2 and 3 hours t
 ### Step-By-Step Execution
 We also have a notebook that runs the code in a more modular fashion, allowing you to execute the 5 steps of the process separately. This version also allows you to change parameter values if you wish. Here are the required steps:
 1. Open `NBT_Pipeline.ipynb` 
-2. Go to the "Set Parameter Values" section and edit any parameter values that you would like to change. All parameters have comments describing what they are used for
+2. Go to the "Set Parameter Values" section and edit any parameter values that you would like to change. All parameters have comments describing what they are used for. Be sure to set the mvp_flag to False if you want to generate new results - see more details on this below.
 3. Go to the "What are we finding the Next Big Thing of?" secton and set the variable `term` to the item you are interested in
 4. Run the notebook step by step, or all at once
  
