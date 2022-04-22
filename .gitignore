@@ -4,3 +4,13 @@ apicache-py3/*
 throttle.ctrl
 pywikibot.lwp
 config.py
+__pycache__/*
+output_step3/influencer_dfs/*
+output_step3/influencer_submissions/*
+output_step3/author_df_*
+output_step3/com_df_*
+output_step3/inf_com_df_*
+output_step3/rank_com_*
+output_step3/rank_subm_*
+output_step3/subm_df_*
+output_step3/influencers_submissions_*
