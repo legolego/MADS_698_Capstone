@@ -11,9 +11,9 @@ git clone https://github.com/legolego/MADS_698_Capstone.git
 ```
 
 ### Prereqs
-Get all of the dependencies needed by running the following:
+Get all of the dependencies needed by running the following in the MADS_698_Capstone directory:
 ```
-pip install -r requirements.txt
+pip3 install -r requirements.txt
 ```
 ### Tools
 Our project uses the following tools. We have included some links to the documentation:
