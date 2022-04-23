@@ -34,6 +34,9 @@ st.sidebar.markdown("[Step 2](#step-2-find-subreddits)", unsafe_allow_html=True)
 st.sidebar.markdown("[Step 3](#step-3-find-influencersg)", unsafe_allow_html=True)
 st.sidebar.markdown("[Step 4](#step-4-find-influencer-relevevant-posts)", unsafe_allow_html=True)
 st.sidebar.markdown("[Step 5](#step-5-find-next-big-thing)", unsafe_allow_html=True)
+st.sidebar.markdown("[Ideas for Next Steps/Improvements](#ideas-for-next-steps-improvements)", unsafe_allow_html=True)
+st.sidebar.markdown("[Statement of Work](#statement-of-work)", unsafe_allow_html=True)
+
 
 st.sidebar.markdown('##')
 git_url = 'https://github.com/legolego/MADS_698_Capstone'
@@ -123,6 +126,14 @@ else:
         and/or potentially harmful to others. We do not currently have a way to address this situation, but it is definitely something that 
         should be considered if additional versions of the product are developed.''')
 
+    st.header("How to Identify 'The Thing'")
+
+    st.markdown('''In our application, the user chooses a specific item that he or she has some interest in. For example, if you are a big 
+    fan of “Squid Game”, a South Korean TV series on Netflix, you would enter “Squid Game”. The item should definitely be specific, 
+    because we are going to try to find things like “Squid Game” for you, such as “Twenty-Five Twenty-One”, another South Korean TV Series. 
+    If you were to enter “tv series”, then our application will look for other things like “tv series”, such as “podcasts” or “miniseries”. 
+    In other words, our tool is made to look for “siblings” of The Thing you enter.''')
+
     st.header("Step 1: Find Category from Thing")
 
     st.subheader("NLP Category")
@@ -171,19 +182,212 @@ else:
     ''', language='python')
 
     st.markdown('''
-    To build our NLP Category, we traversed the sentence graph to make a list of all words with a relationship in
-     *obl*, *compound*,*amod*,*nmod*,*conj* or *appos* (oblique nominal, compound, adjectival modifier, nominal modifier, 
-     conjunction, or appositional modifier) with the Root word. This will turn the first sentence of the Squid Game article:
- “Squid Game (Korean: 오징어 게임; RR: Ojing-eo Geim) is a South Korean survival drama television series created by Hwang Dong-hyuk 
- for Netflix. Its cast includes Lee Jung-jae, Park Hae-soo, Wi Ha-joon, HoYeon Jung, O Yeong-su, Heo Sung-tae, Anupam Tripathi, and Kim Joo-ryoung.”
+    To build our NLP Category, we traversed the sentence graph to make a list of all words with a relationship of
+    *obl*, *compound*,*amod*,*nmod*,*conj* or *appos* (oblique nominal, compound, adjectival modifier, nominal modifier, 
+    conjunction, or appositional modifier) with the Root word. This will turn the first sentence of the Squid Game article:
+    - "Squid Game (Korean: 오징어 게임; RR: Ojing-eo Geim) is a South Korean survival drama television series created by Hwang Dong-hyuk for Netflix.”
 
+    into
+
+    - ['Korean', 'drama', 'television', 'series']
+
+    There is a balance that needs to be found between returning too many words here, and too few. If 'South' and 'survival' were brouight back there,
+    other search terms would have brought back too many.
     ''')
 
-
     st.subheader("Wikipedia Categories")
-      
-    st.header("Step 2: Find Subreddits")
+
+    st.markdown('''In addition to the NLP Category for the item of interest, we can also easily get the associated Wikipedia entry
+    categories. A problem with these though, is that some of the categories are actually the item itself, and some are too far 
+    away conceptually from our item of interest. Squid Game has relevant categories like “2021 South Korean television series debuts” 
+    and “South Korean thriller television series”. It also has a category like “Criticism of capitalism” which while true,
+    is probably not what most people are looking for when they’re trying to find a “sibling” to Squid Game. 
+    The Wikipedia category of “Squid Game” is also available, but articles in this category are things that are “children”
+    of Squid Game, such as the 'Crab Game' and characters, also things we’re not looking for.   
     
+    ''')
+
+    st.markdown('''
+    The solution we used to filter the Wikipedia categories was to use the [Sentence Transformer](https://huggingface.co/sentence-transformers)
+    library with huggingface models to make a sentence vector for our found NLP category as well as all the categories from Wikipedia. 
+    We used our NLP category as a ground truth, since a human chose it to describe the Thing. The first step was to remove any 
+    Wikipedia category that was too similar to the Thing itself, since we’re not interested in its “children.” The next step was to keep at least two categories 
+    of the remaining categories that were within a vector closeness threshold of the NLP category to the Wikipedia categories.    
+    ''')
+
+    st.markdown('''One last step for the categories was to look for any individual years or decades, i.e.1990s, mentioned in the Wikipedia categories, 
+    and add new categories to the list with current timespans. We want things that are being talked about today, so to be safe we checked for the 
+    existence of categories in Wikipedia with the year to be replaced with each of the last five years, and any mentioned 
+    decades with “2020s”. If these categories existed, they were added to our list.    
+    ''')
+
+    st.markdown('''
+    Squid Game wikipedia categories went from these:
+
+    - 2021 South Korean television series debuts
+    - Battle royale
+    - Criticism of capitalism
+    - Death games in fiction
+    - Korean-language Netflix original programming
+    - South Korean action television series
+    - South Korean horror fiction television series
+    - South Korean thriller television series
+    - Squid Game
+    - Television series impacted by the COVID-19 pandemic
+    - Television series set on fictional islands
+    - Television shows about death games
+    - Television shows set in Seoul
+    ''')
+
+    st.markdown('''
+    To this, which we refer to as our “Best Wiki categories”:
+    - 2021 South Korean television series debuts
+    - South Korean action television series
+    - South Korean horror fiction television series
+    - South Korean thriller television series
+    - Television shows set in Seoul
+    ''')
+      
+    st.markdown('''
+    And finally with added years to these:
+    - 2021 South Korean television series debuts
+    - South Korean action television series
+    - South Korean horror fiction television series
+    - South Korean thriller television series
+    - Television shows set in Seoul
+    - 2018 South Korean television series debuts
+    - 2019 South Korean television series debuts
+    - 2020 South Korean television series debuts
+    - 2022 South Korean television series debuts
+    ''')
+
+    st.subheader('Failed Whitelist Search')
+
+    st.markdown('''
+    Our NLP category and the filtered Wikipedia categories were enough to go on to the next step of searching Reddit 
+    for relevant subreddits, but we also needed more information from Wikipedia to help us in Step 5 when it became time to
+    isolate and identify siblings of The Thing. A simple solution we tried was to just make a whitelist of all the 
+    article names in all of the relevant Wikipedia categories we found. We didn’t have a lot of faith in this 
+    actually working in the final step, but a small edit was made to this list to look for words that were 
+    too common in the list of article titles from each Wikipedia category. If too 
+    many automobile manufacturers, for example, had the word “Company” in the article title, we removed it.
+    ''')  
+
+    st.markdown('''
+    We didn’t think a whitelist of search terms would work well because we would be limited to only the terms 
+    in the whitelist, and not be able to find ones we don’t know about. Even searching text for terms in 
+    the whitelist is problematic because many uses would not be exactly like in the whitelist. People don’t 
+    say “Ford Motor Company” everytime they talk about a Ford. Removing the word Company above was an attempt 
+    to help this. We did also try fuzzy matching of items in the whitelist against the text of found posts and 
+    comments from Reddit using the rapidfuzz library. This was guaranteed to bring back results from our whitelist, 
+    but accuracy was poor. Most terms brought back this way were not in the text at all. Multi-word phrases 
+    having a very close match on one of its words were found often, as well as exact matches for short 
+    words that could appear as parts of other words. Tuing accuracy thresholds based on word length didn't help either.
+    ''')
+
+    st.markdown('''Fuzzy matching against the whitelist was abandoned in favor of the Conditional Random Field model. 
+    We realized that we could use machine learning to classify words of interest in Reddit posts, so we also went back 
+    to collect up to 200 Wikipedia articles from each category that we could use as automatically labeled training data. 
+    We’ll talk about this more in Step 5.
+    ''')
+
+    st.markdown('''What we’re really doing here with Wikipedia is using it as a knowledge graph, without the associated 
+    costs of maintenance, but with the added cost of retrieval time over an API. Since Wikipedia has articles in categories, 
+    it is quite easy to get things that are “siblings” to each other, as well as find “parents” or categories of things. 
+    This hierarchy is important for us to be able to traverse, so we can find the right kinds of things. This can also be 
+    thought of as a graph, with article nodes attached to multiple category nodes through edges of an “in_Category”-type, for example.
+    ''')
+
+    st.header("Step 2: Find Subreddits")
+
+    st.markdown('''Now that we know what categories The Thing belongs to, it’s time to move to Reddit. We need to find the 
+        subreddits where people are talking about other things like The Thing. We pondered how to choose the best subreddits to examine 
+        for the Next Big Thing. We considered downloading all of them and creating a search algorithm customized to our task, but quickly 
+        realized this would be difficult as subreddits are constantly changing. In the end we decided that Reddit had probably put a lot 
+        of work into their own search API so that their users could find the right place to participate. We dug into the different ways 
+        to [search a subreddit using PRAW](https://praw.readthedocs.io/en/stable/code_overview/reddit/subreddits.html). We quickly found 
+        that the search_by_topic endpoint, which would have been a perfect fit, is no 
+        longer supported. This left us with subreddit.search and subreddit.search_by_name. Some testing showed that search_by_name didn’t 
+        provide any additional results other than subreddits that are “not suitable for work” (nsfw) or have a pretty small number of 
+        subscribers, neither of which we wanted. So, we were left with subreddit.search.''')
+        
+    st.markdown('''With the API endpoint identified, it was time to figure out what search terms to use to return the best subreddits. 
+        We started off by using the NLP category words for The Thing: ''')
+       
+    st.code('''['Korean', 'drama', 'television', 'series']''')
+        
+    st.markdown('''Using these words we built four search terms, starting from the last word and concatenating each new word to the left. For 
+        Squid Game this resulted in:''')
+    
+    st.code('''['series', 'television series', 'drama television series', 
+    'Korean drama television series']''')
+    
+    st.markdown('''After running all four search terms through the subreddit.search API, creating a unique set of results, removing 
+        nsfw subreddits, subreddits with less than 20K subscribers, and subreddits with no posts in the last 3 days, we were left with over 
+        80 subreddits. In order to narrow this down to a more manageable number of subreddits to explore, we used the SentenceTransformer library 
+        to calculate cosine similarity between different combinations:''')
+
+    st.markdown('''
+        - Subreddit display name to Wikipedia summary paragraph of The Thing
+        - Subreddit details to Wikipedia summary paragraph of The Thing, where the subreddit details were a concatenation of the subreddit display name, subreddit title, and subreddit description
+        - Subreddit details to the best Wikipedia categories for The Thing (average over all categories)''')
+    
+    st.markdown('''We found the best precision when using the best Wikipedia categories, so we took the average cosine similarity, and chose 
+        the top 20 subreddits.''')
+
+    st.markdown('''For example, for the r/manga subreddit:''')
+
+    st.image(get_image('r_manga.png'), caption = None)
+
+    st.markdown('''We built this string:''')
+
+    st.code('''"manga./r/manga: manga, on reddit..Everything and anything manga! (manhwa/manhua 
+        is okay too!) Discuss weekly chapters, find/recommend a new series to read, post a picture 
+        of your collection, lurk, etc!”''')
+
+    
+    st.markdown('''and ran cosine similarity between it and each of the best Wikipedia categories identified earlier. 
+        We then took the average cosine similarity in order to rank the results. This resulted in the following subreddits, 
+        in ranked order from most relevant to least relevant: ''')
+
+    st.code('''['MangaCollectors', 'GlobalOffensive', 'manga', 'anime', 'ObscureMedia', 
+    'startrek', 'television', 'scifi', 'dvdcollection', 'Documentaries', 'WoT', 
+    'doctorwho', 'StarWarsLeaks', 'XboxSeriesS', 'Sonsofanarchy', 'danganronpa', 
+    'ActionFigures', 'movies', 'StarWars', 'entertainment']''')
+
+    st.markdown('''We had originally made a conscious decision to not directly search on the original term, ‘Squid Game’, 
+        because we were worried we would get back subreddits that only spoke about Squid Game and nothing else. But 
+        looking at the list returned, we realized that maybe we might be missing out on some relevant subreddits. So 
+        we tried adding in a direct search on Squid Game, along with our other search terms. This produced a different 
+        set of results: ''')
+
+    st.code('''['KDRAMA', 'korea', 'squidgame', 'MangaCollectors', 'NANIKPosting', 
+    'GlobalOffensive', 'manga', 'anime', 'yourturntodie', 'ObscureMedia', 'startrek', 
+    'television', 'scifi', 'dvdcollection', 'Documentaries', 'WoT', 'doctorwho', 
+    'StarWarsLeaks', 'XboxSeriesS', 'GachaClubCringe']''')
+
+    st.markdown('''75 percent of the subreddits are the same between the two groups, however, noticeable additions with 
+        the inclusion of the original search term are the r/KDRAMA and r/korea subreddits, both of which could contain 
+        relevant posts. Also, we see that our results are not filled up with Squid Game specific subreddits, there is 
+        only one.''')
+
+    st.markdown('''In examining our results, we noticed that the first 10 subreddits returned based on cosine 
+        similarity tended to be more relevant than the last 10. To more empirically determine the best method 
+        for subreddit searches we completed a manual evaluation of the precision of our results focusing on two 
+        components, each with two options: subreddits returned with category words only vs. subreddits returned 
+        with category words plus the original term, and precision at 10 subreddits vs. precision at 20 subreddits. 
+        The following chart shows that in 8 of our 10 test cases, using the Category and Term with only 10 
+        subreddits returned the highest precision of the four options.''')
+
+    st.image(get_image('subreddit_eval_optimal.png'), caption = None)
+
+    st.markdown('''While performing test runs of new search items , we realized that it might be beneficial to search 
+    directly on the best Wikipedia categories for The Thing, such as ‘Television shows set in Seoul’. We tested adding 
+    this search to our existing searches and reviewed the results, again by manually determining if each subreddit 
+    returned was relevant. Our results, seen in the following chart, showed that adding the Wikipedia Categories did 
+    not provide better results, so we returned to our original method of using the NLP Categories and the original search term:''')
+
+
     st.header("Step 3: Find Influencers")
 
     st.markdown('''Once we have our list of relevant subreddits, our next step was to find influential redditors
@@ -274,3 +478,102 @@ else:
 
 
     st.header("Step 5: Find Next Big Thing")
+
+    st.subheader('Conditional Random Field')
+
+    st.markdown('''Now that we have some relevant posts to search through, how do we know what we’re even looking for? 
+    Our first attempt was the whitelist and fuzzy match, described at the end of Step 1. This wasn’t working well, so we 
+    discussed the challenge with  Professor David Jurgens, and he gave us the idea of using a 
+    [Conditional Random Field](https://albertauyeung.github.io/2017/06/17/python-sequence-labelling-with-crf.html/ ) 
+    (CRF) model to find the kinds of words 
+    we’re looking for. This was brand new to us, but we were eager to try.
+    ''')
+
+    st.markdown('''CRFs are a class of statistical modeling methods used for structural prediction that can take context 
+    into account. A graphical model is used to represent the presence of dependencies between predictions, which in the case 
+    of natural language processing would be words immediately neighboring the target word.''')
+
+    st.markdown('''Our goal was to find words in the unseen Reddit posts that were of the same category as the Thing. 
+    What David Jurgens helped us realize was that we basically had a great training corpus that just needed to be labeled. 
+    For each Wikipedia category that our Thing belonged to, we were able to collect up to 200 articles. The number 200 was 
+    chosen to make sure the corpus didn’t get too large, as some categories can have over a thousand articles, so this 
+    isn’t an exhaustive list of articles. We were limited to 5GB of memory in Deepnote, and did hit this limit a few times.
+    ''')
+
+    st.subheader('Training Data')
+    
+    st.markdown('''We know the title of each article, so we just needed to tag each word in each 
+    article with a binary label, ‘Y’ and ‘N’ in our case, if each word was indeed part of the title. This wasn’t perfect, 
+    especially with names of people, as someone’s name in the title doesn't usually include their middle name, 
+    but the first sentence of Wikipedia often does include middle names. We were looking for the identical phrase, 
+    so this prevented some valid names/words from being tagged correctly.''')
+
+    st.markdown('''One trick that helped a Wikipedia title to be parsed as a sentence was to include it 
+    in a new “first” sentence before the Wwikipedia article itself, i.e. “Squid Game” is a thing. (quotation marks included) 
+    This kept the phrase together so Stanza could correctly parse it, and it was used in a complete sentence instead of just as a phrase.
+    This also reduced and one extra call to Stanza per article.''')
+
+    st.markdown('''We used the Stanza dependency parser to get each word’s part of speech, and then we were able to build out 
+    our training set. We started making our training set with each row being a tuple of three items, the word, its part of 
+    speech, and a Y/N label as to whether it was part of an exact match to the complete phrase in the Wikipedia article title or not. Features were 
+    then further added to take into account things like whether the neighboring words were upper or lower case, 
+    started with a capital letter, or were digits. This led to a very imbalanced data set, with fewer than 2% of rows having 
+    a ‘Y’ tag, and the rest having an ‘N’ tag. Labeling Wikipedia article text was quite time consuming, on the order of an hour or longer, 
+    but training the model was surprisingly fast, usually no longer than 2 minutes each time.
+    ''')
+
+    st.markdown('''Once we had built a trained tagger to tag individual words, we tested it on a 20% sized test set. Because of the imbalance, the 
+    returned precision and recall was always at least 99% for N’s. Our target was the Y’s, and here precision and recall was 
+    lower. Precision and recall was as low as 70%/53% respectively for mentions of things like Elon Musk and IPhone, but 
+    got as high as 90%/86% respectively for Catan, the board game.
+    ''')
+
+    st.subheader('Classification')
+
+    st.markdown('''One decision we made was to combine all of the articles in each category into a single category, which could be 
+    thought of as a generic Thing-type category, because some Wikipedia categories had very few articles available to train on. We had 
+    to assume that articles in different categories were in fact siblings to each other, when this wouldn’t always be true. 
+    This did help simplify the classification step, as each unseen Reddit post would only have to be compared against a single model, 
+    instead of one for each category. Parsing and labeling each unseen Reddit post turned out to be quite time consuming, but 
+    classifying wasn’t too bad. Once we had every word labeled, we went back to extract and collect phrases that were labeled with 
+    a ‘Y’. ''')
+    
+    
+    st.markdown('''For a comparison, we also looked for exact matches of each of the CRF-found matches, as well as exact matches from 
+    the original whitelist of article titles we saved back in Step 1. The original whitelist missed many, as we had expected, 
+    but the exact CRF whitelist match did find mentions that the model did not. We ended up using the exact CRF whitelist 
+    match as a number with which to calculate recall for phrases found with CRF. The final output of this step was a 
+    dataframe with a column representing the found Entities, as well as counts for the number of times each was found in the unseen posts.
+    ''')
+
+
+
+    df = pd.read_csv( Path(__file__).parents[1] / 'streamlit/example_output/crf_results_Squid_Game.csv')
+    # CSS to inject contained in a string
+    hide_dataframe_row_index = """
+                <style>
+                .row_heading.level0 {display:none}
+                .blank {display:none}
+                </style>
+                """
+
+    # Inject CSS with Markdown
+    st.markdown(hide_dataframe_row_index, unsafe_allow_html=True)
+
+    st.dataframe(df)
+
+    st.header('Ideas for Next Steps/Improvements')
+
+    st.header("Statement of Work")
+
+    st.markdown('''**_Kim Di Camillo_** - Co-authored the idea for the Next Big Thing and created the initial high level project design; 
+    Designed, developed, tested, and evaluated Step 2: Find Relevant Subreddits, and Step 4: Find Relevant Influential User Posts; wrote 
+    the project readme file; Handled general project management tasks to keep the team on schedule and ensure we included all required 
+    components in our deliverables. ''')
+    
+    st.markdown('''**_Oleg Nikolsky_** - Co-authored the idea for the Next Big Thing and created the initial high level project design; 
+    Designed, developed, tested, and evaluated Step 1: Find Category from Thing, and Step 5: CRF Find New Terms; setup and
+    maintained project GitHub; ''')
+    
+    st.markdown('''**_Cody Crow_** - Designed, developed, tested Step 3: Finding Influencers, Drafted final project video presentation
+    and coordinated recording and production of final video, created intitial instance of streamlit and blog outline.''')
