@@ -15,6 +15,14 @@ Get all of the dependencies needed by running the following in the MADS_698_Caps
 ```
 pip3 install -r requirements.txt
 ```
+#### Installation Notes
+Note that our tool was built using Python 3.7.
+
+Depending on your version of Python, the installation of pickle5 may fail as it is already included in the Python install. If this happens, just disregard the error message.
+
+Additionally, the installation of wordcloud may require a wheel file that is specific to your operating system. You can go to this website to find the file location and run a pip3 install on the direct link: 
+[Wordcloud Wheel Files](https://github.com/sulunemre/word_cloud/releases/tag/2)
+
 ### Tools
 Our project uses the following tools. We have included some links to the documentation:
 
