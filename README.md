@@ -94,7 +94,7 @@ While testing the project we sometimes had trouble with the 5GB RAM limit on our
 5. Execute the cell block you just changed and the remaining cells in the notebook
 
 # Next Big Thing Output
-The output of the tool is a list of the top 10 items currently being discussed on Reddit that are siblings of your original item entered. The data is also presented in a word cloud shaped as Snoo, Reddit's alien mascot. In the Snoo word cloud, all items found as part of the Conditional Random Field (CRF) model we employed are represented, with the size of the item indicating its frequency of occurrence.
+The output of the tool is a list of the top 10 items currently being discussed on Reddit that are siblings of your original item entered, along with the count of occurrences found by the Conditional Random Field (CRF) model we used. The data is also presented in a word cloud shaped as Snoo, Reddit's alien mascot. In the Snoo word cloud, all items found as part of the Conditional Random Field (CRF) model we employed are represented, with the size of the item indicating its frequency of occurrence.
 
 # Streamlit Application
 We published an application in Streamlit where you can see the results for pre-generated examples such as Squid Game, Dogecoin, Elon Musk and more. There is also a blog we wrote describing our project and results. You can check it out here:
