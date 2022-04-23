@@ -1,7 +1,7 @@
 # Next Big Thing Capstone Project
 ![NBT Logo](https://github.com/legolego/MADS_698_Capstone/blob/main/assets/NextBigThingLogoDraft2.png?raw=true) 
 
-Capstone project for University of Michigan's Master of Applied Data Science program created by Cody Crow, Kim Di Camillo and Oleg Nikolsky. Given a user-entered item, the tool we built mines Reddit data to identify what popular Redditors are currently discussing that are "like" the original item.
+Capstone project for University of Michigan's Master of Applied Data Science program created by Cody Crow, Kim Di Camillo and Oleg Nikolsky. Given a user-entered item, the tool mines Reddit data to identify what popular Redditors are currently discussing that are "like" the original item.
 
 # Getting Started
 ### Clone the repo
@@ -33,7 +33,7 @@ Our project uses the following tools. We have included some links to the documen
 | Wordcloud | Visualization of final output | https://amueller.github.io/word_cloud/ |
  
 ### Reddit API Setup
-We have created a user specifically for this project that is usable by others, but to avoid overlapping result sets you will probably want to set up your own Reddit account and register your own app. This can be done here:
+We have created a user specifically for this project that is usable by others, but you will probably want to set up your own Reddit account and register your own app. This can be done here:
 
 [Reddit API Access](https://www.reddit.com/wiki/api) 
 
