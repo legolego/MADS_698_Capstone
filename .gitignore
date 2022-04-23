@@ -3,7 +3,6 @@ streamlit/__*
 apicache-py3/*
 throttle.ctrl
 pywikibot.lwp
-config.py
 __pycache__/*
 output_step3/influencer_dfs/*
 output_step3/influencer_submissions/*

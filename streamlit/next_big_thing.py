@@ -22,8 +22,8 @@ st.sidebar.markdown("Oleg Nikolsky, Kim Di Camillo, Cody Crow")
 st.sidebar.markdown('##')
 
 mode = st.sidebar.radio(
-     "Try out the App",
-     ('Blog Mode', 'App Mode'))
+     "Choose view:",
+     ('Blog', 'Precalculated Results'))
 
 # Table of contents for navigation
 
@@ -65,11 +65,71 @@ if mode == "App Mode":
 else:
     st.header("Introduction")
 
+    st.subheader("Motivation and Premise")
+
+    st.markdown('''Being unfamiliar with it prior to this project, we were pretty shocked to realize the depth and reach of Reddit when 
+        considering using it for our master’s Capstone project. According to statistics from 2020 found in [10 Reddit Statistics Every 
+        Marketer Should Know](https://www.oberlo.com/blog/reddit-statistics#:~:text=The%20number%20of%20subreddits%20has,(Reddit%20Metrics%2C%202021).), 
+        there are more than 52 million daily active Reddit users worldwide, many of whom are from the United States. In the US there are nearly 
+        222 million monthly active users and 18% of American adults say they are Reddit users.''') 
+
+    st.markdown('''What differentiates Reddit from other social media networks is its structure around communities, known as subreddits. All 
+        conversations on Reddit take place within a community with the intention that all posts and comments focus on the specific topic(s) 
+        that the subreddit was created for. This means that if you look at the activity within a subreddit, you can safely assume that it will 
+        focus on the content you care about. Reddit has moderators within each subreddit that enforce community rules, such as the type of 
+        posts that are and are not allowed, including staying on topic.''')
+
+    st.markdown('''As shown on the [Metrics For Reddit](https://frontpagemetrics.com/list-all-subreddits) website, which runs statistics on 
+        a weekly basis, there are currently over 3.4 million subreddits on Reddit. With all of this conversation going on around specific 
+        topics, we wondered if it would be possible to mine the Reddit data to see what people are talking about, and maybe to be able to 
+        identify upcoming trends. We wondered - if we are interested in a specific “Thing”, can we use people’s Reddit conversations to find 
+        similar items that are coming into the public eye? Can we find the “Next Big Thing”?''')
+
+    st.subheader("Current Available Tools")
+
+    st.markdown('''Reddit provides the ability to see the top items that are trending across the platform, as well as the ability to 
+        see what is trending within a subreddit. Additionally, there are many useful tools that have been developed for analyzing Reddit 
+        data. Here are just a few examples:''')
+
+    st.markdown('''
+        - There are tools available that allow you analyze a specific subreddit or user. One is [Redective](https://www.redective.com/), which provides information about subreddit usage such as word frequencies found in posts and daily timing of posts.
+        - [Socialgrep](https://socialgrep.com/) allows you to search for keywords, see subreddits where the keywords are found, how often they are found, top users mentioning the keywords, location of use, and the sentiment of text where they were used.
+        - There are several excellent tools for analyzing users. [Karmalb](https://www.karmalb.com/) is a leaderboard that allows you to find users with the current highest Karma values. [Redditmetis](https://redditmetis.com/) and [Reddit-User-Analyser](https://reddit-user-analyser.netlify.app/) take this up several notches by providing post and comment sentiment analysis for users along with their post and activity patterns.''')
+
+    st.markdown('''These tools all serve a purpose, but none of them have the functionality to allow a user to isolate a particular area 
+        of interest, and find out what is trending in this area of interest across subreddits, as our tool does. The ability to interrogate 
+        Reddit communities to see new items that its influential users are discussing has potential applications in many areas. Some examples 
+        are:''')
+
+    st.markdown('''
+        - Identify products that are getting popular or losing popularity over time
+        - Find new investment opportunities 
+        - Determine what Redditors are concerned about, with the goal of providing information and/or assistance
+        - Identify the latest subfield in a field of study
+        - Perform market research on emerging trends in an industry
+        - Use results as part of a Reddit subreddit recommender system''')
+
+    st.subheader("Ethical Concerns")
+
+    st.markdown('''In terms of ethical concerns with our project, we are storing the user name and post data for our influential users. 
+        We do not display this combined information, but it is available in the data structures created throughout our pipeline. So, 
+        through our project, a user can be associated with a certain topic that they may not want to be publicly associated with. However, 
+        one benefit of using Reddit data is that Reddit does not require users to display their name or other identifying information, so 
+        Redditors can operate with anonymity if they choose to.''')
+
+    st.markdown('''In terms of content that may discuss unethical topics or practices, we have excluded any subreddits that are “nsfw” or 
+        Not Safe For Work. However, we are not limiting what users enter into the tool, so it is possible that someone could search on a 
+        topic that is unethical. In doing so, a user may be able to use our tool as a resource in gathering information that is unethical 
+        and/or potentially harmful to others. We do not currently have a way to address this situation, but it is definitely something that 
+        should be considered if additional versions of the product are developed.''')
+
     st.header("Step 1: Find Category from Thing")
 
-    st.markdown('''Once we know The Thing as identified in Wikipedia, we use the Wikipedia library to read the first sentence of the summary,
-        which is the text located at the top of any Wikipedia article. Our NLP rules have a little flexibility but rely on the first 
-        sentence having a structure of *The Thing* **IS A** *so-and-so…*''')
+    st.subheader("NLP Category")
+
+    st.markdown('''Once we know The Thing as identified in Wikipedia, we create two types of categories from the article.
+        The first is an NLP category, as generated from the first sentence of the Wikipedia summary which is the text located at the top
+        of any Wikipedia article. Our NLP rules have a little flexibility but rely on the first sentence having a structure of *The Thing* **IS A** *so-and-so…*''')
                  
     st.markdown('''After dependency and part-of-speech parsing with the Stanza library,
         we can see something like the sentence shown in our “star chart” below, with the Root word generally being the grammatical object 
@@ -79,7 +139,7 @@ else:
         *nsubj:pass* or *parataxis* (passive nominal subject and parataxis like "I came, I saw, I conquered") to that first word. 
         This seemed to work well for other examples we tried, like the *Lost TV series*.''')
 
-    st.image(get_image('star_chart_Squid_Game.gv.png'), caption="Example 'star chart' for Squid Game")
+    st.image(get_image('star_chart_Squid_Game.gv.png'), caption="Example 'star chart' for Squid Game (click arrows in top-right to expand)")
 
     st.markdown('''If you look at our “Star Chart”, you can see that each sentence is basically parsed into a network or graph, with each node
      being a word, and each edge between words being labeled with a relationship type. Stanza uses a list of dicts(seen below) with each parsed word's
@@ -118,6 +178,9 @@ else:
  for Netflix. Its cast includes Lee Jung-jae, Park Hae-soo, Wi Ha-joon, HoYeon Jung, O Yeong-su, Heo Sung-tae, Anupam Tripathi, and Kim Joo-ryoung.”
 
     ''')
+
+
+    st.subheader("Wikipedia Categories")
       
     st.header("Step 2: Find Subreddits")
     
