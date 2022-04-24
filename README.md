@@ -29,12 +29,12 @@ Our project uses the following tools. We have included some links to the documen
 
 | Tool | Use | Link |
 | ------ | ------ | ------ |
-| Reddit | Main data source. APIs to access subreddit, submission, comment, and user data | https://praw.readthedocs.io/en/stable/ https://github.com/pushshift/api https://github.com/mattpodolak/pmaw#description |
+| Reddit | Main data source. APIs to access subreddit, submission, comment, and user data | https://praw.readthedocs.io/en/stable/ <br /> https://github.com/pushshift/api <br /> https://github.com/mattpodolak/pmaw#description |
 | Wikipedia | Content source for siblings and training data | https://github.com/goldsmith/Wikipedia |
 | Wikipedia API | Wikipedia category members | https://github.com/martin-majlis/Wikipedia-API |
 | Pywikibot | Wikipedia category hierarchy  | https://www.mediawiki.org/wiki/Manual:Pywikibot |
 | Stanza | Dependency parsing and part-of-speech tagging | https://stanfordnlp.github.io/stanza/ |
-| Sentence Transformers | Text comparison via cosine similarity using the all-MiniLM-L6-v2 HuggingFace Model | https://www.sbert.net/   https://www.sbert.net/docs/pretrained_models.html|
+| Sentence Transformers | Text comparison via cosine similarity using the all-MiniLM-L6-v2 HuggingFace Model | https://www.sbert.net/ <br />  https://www.sbert.net/docs/pretrained_models.html|
 | Pycrfsuite | Conditional Random Field (CRF) model | https://github.com/scrapinghub/python-crfsuite |
 | Rapidfuzz | Fuzzy matching to find known items from a whitelist in unseen text | https://github.com/maxbachmann/RapidFuzz |
 | Graphviz | Visualization of the dependency structure of parsed sentences | https://graphviz.org/ |
