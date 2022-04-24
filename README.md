@@ -29,7 +29,7 @@ Our project uses the following tools. We have included some links to the documen
 
 | Tool | Use | Link |
 | ------ | ------ | ------ |
-| Reddit | Main data source. APIs to access subreddit, submission, comment, and user data | https://praw.readthedocs.io/en/stable/ https://github.com/pushshift/api https://github.com/mattpodolak/pmaw#description |
+| Reddit | Main data source. APIs to access subreddit, submission, comment, and user data | https://praw.readthedocs.io/en/stable/ <br /> https://github.com/pushshift/api https://github.com/mattpodolak/pmaw#description |
 | Wikipedia | Content source for siblings and training data | https://github.com/goldsmith/Wikipedia |
 | Wikipedia API | Wikipedia category members | https://github.com/martin-majlis/Wikipedia-API |
 | Pywikibot | Wikipedia category hierarchy  | https://www.mediawiki.org/wiki/Manual:Pywikibot |
