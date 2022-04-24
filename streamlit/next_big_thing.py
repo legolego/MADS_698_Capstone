@@ -585,8 +585,7 @@ else:
     st.markdown('''Upon review of our results in our next step, we observed that not all of the subreddits would have representation in 
     the influential authors list. We felt it was important that all relevant subreddits had representation in our returned list of influencers, 
     so our ranking was adjusted to take the top 5 authors from each subreddit. This avoids the issue of a less popular, but highly relevant 
-    subreddit being ignored and not represented by our list of influencers. Below we will discuss some ways in which we could further improve 
-    our influencer selection algorithm as a future refinement.''')
+    subreddit being ignored and not represented by our list of influencers.''')
 
     st.markdown('''In our analysis of our chosen authors, we looked at Reddit’s “ranking” for its users (known as Karma) as a way to evaluate 
     how well we captured influencers. Karma is essentially the same as what a score is for submissions and comments, upvotes and downvotes, but 
@@ -600,7 +599,7 @@ else:
     within the top 10% of Comment Karma and 56% were within the top 1% of Comment Karma. Our lowest count of top 10% Redditors within our influencer top 250 scoring
     was 69% - our lowest count for top 1% Redditors within our influencer top 250 scoring was 14%.''')
 
-    st.image(get_image('step3_top1-10pct.png'), caption = "Top 250 Influecers within Top 1% and 10% of Comment Karma")
+    st.image(get_image('step3_top1-10pct.png'), caption = "Top 250 Influencers within Top 1% and 10% of Comment Karma")
 
     st.markdown('''Once we finished some initial full run-throughs of our pipeline, we recognized that we would benefit from gathering additional 
     comments and submissions in Step 4 for our analysis, so we decided to alter our influencer list to include up to 125 authors and incorporate 
