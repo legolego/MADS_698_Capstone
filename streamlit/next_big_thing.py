@@ -23,17 +23,20 @@ st.sidebar.markdown('##')
 
 mode = st.sidebar.radio(
      "Choose view:",
-     ('Blog', 'Precalculated Results'))
+     ('Blog', 'TLDR: Precalculated Results'))
 
 # Table of contents for navigation
 
+
 st.sidebar.markdown("Navigation")
 st.sidebar.markdown("[Introduction](#introduction)", unsafe_allow_html=True)
-st.sidebar.markdown("[Step 1](#step-1-find-category-from-thing)", unsafe_allow_html=True)
-st.sidebar.markdown("[Step 2](#step-2-find-subreddits)", unsafe_allow_html=True)
-st.sidebar.markdown("[Step 3](#step-3-find-influencersg)", unsafe_allow_html=True)
-st.sidebar.markdown("[Step 4](#step-4-find-influencer-relevevant-posts)", unsafe_allow_html=True)
-st.sidebar.markdown("[Step 5](#step-5-find-next-big-thing)", unsafe_allow_html=True)
+st.sidebar.markdown("[Tools](#tools)", unsafe_allow_html=True)
+st.sidebar.markdown("[Step 1 - Find Category from Thing](#step-1-find-category-from-thing)", unsafe_allow_html=True)
+st.sidebar.markdown("[Step 2 - Find Subreddits](#step-2-find-subreddits)", unsafe_allow_html=True)
+st.sidebar.markdown("[Step 3 - Find Influencers](#step-3-find-influencersg)", unsafe_allow_html=True)
+st.sidebar.markdown("[Step 4 - Find Their Relevant Posts](#step-4-find-influencer-relevevant-posts)", unsafe_allow_html=True)
+st.sidebar.markdown("[Step 5 - Find the Next Big Thing](#step-5-find-next-big-thing)", unsafe_allow_html=True)
+st.sidebar.markdown("[Results/Findings](#results-findings)", unsafe_allow_html=True)
 st.sidebar.markdown("[Ideas for Next Steps/Improvements](#ideas-for-next-steps-improvements)", unsafe_allow_html=True)
 st.sidebar.markdown("[Statement of Work](#statement-of-work)", unsafe_allow_html=True)
 
@@ -45,7 +48,16 @@ st.sidebar.markdown("Source Code on [Github](%s)" % git_url)
 
 st.image(get_image('NextBigThingHeader.png'))
 
-if mode == "App Mode":
+if mode == "TLDR: Precalculated Results":
+
+    st.header("The Next Big Thing Results")
+
+    st.markdown('''**TLDR:** Our project looks for the most talked about analogs on Reddit of any Thing, as long as it exists in Wikipedia.
+    We use NLP, Wikipedia and Reddit APIs, and a Conditional Random Field model to find new mentions of entities like the entered Thing.
+    Some precalculated results are below:
+    ''') 
+
+
     term = st.selectbox('Select a Thing', get_mvp_terms())
 
     term_edit = term.replace(" ","_")
@@ -61,6 +73,8 @@ if mode == "App Mode":
     df_top10_crf.columns = ['Next Big Thing?', 'Number Found']
     st.table(df_top10_crf)
 
+    st.subheader("Look! Up in the sky! It's a wordcloud!")
+
     fig = make_wordcloud(results_df, title = 'Top CRF Results')
     st.image(fig)
     #st.pyplot(fig)
@@ -70,7 +84,7 @@ else:
 
     st.subheader("Motivation and Premise")
 
-    st.markdown('''Being unfamiliar with it prior to this project, we were pretty shocked to realize the depth and reach of Reddit when 
+    st.markdown('''Being unfamiliar with Reddit prior to this project, we were pretty shocked to realize its depth and reach when 
         considering using it for our master’s Capstone project. According to statistics from 2020 found in [10 Reddit Statistics Every 
         Marketer Should Know](https://www.oberlo.com/blog/reddit-statistics#:~:text=The%20number%20of%20subreddits%20has,(Reddit%20Metrics%2C%202021).), 
         there are more than 52 million daily active Reddit users worldwide, many of whom are from the United States. In the US there are nearly 
@@ -126,15 +140,115 @@ else:
         and/or potentially harmful to others. We do not currently have a way to address this situation, but it is definitely something that 
         should be considered if additional versions of the product are developed.''')
 
-    st.header("How to Identify 'The Thing'")
+    
+    st.subheader('High Level Process Flow')
+
+    st.markdown('''There are five main steps to the Next Big Thing, based on the dual premise that subreddits have specific topics and 
+        that there are a certain group of Redditors, or users, that are likely influential within their subreddit. Each of these steps
+        will be descibed later in the blog:''')
+
+    st.markdown('''
+        - Step 1: Find the parent/category of the query word/phrase entered by the user
+        - Step 2: Find the relevant subreddits where query items such as the one entered by the user will be discussed
+        - Step 3: Find the influential users in each identified subreddit
+        - Step 4: Find recent posts (submissions/comments) for the influential users and identify those that are most relevant to our parent/category
+        - Step 5: Isolate “siblings” of our query word/phrase from relevant posts and rank the results based on frequency counts''')
+
+    #############################################################
+    st.header('Tools')
+
+    st.subheader('Reddit')
+
+    st.markdown('''Reddit consists of a collection of submissions with comments (collectively referred to in this blog as posts). 
+        Below is an example of a submission and corresponding comment in the r/detroitlions subreddit, with the key data points highlighted. 
+        The submission is in the top center of the page, the comment is below it, and the subreddit details are on the right.''')
+
+    st.image(get_image('anatomy.png'), caption="Anatomy of a Reddit Post")
+
+    st.markdown('''All of the variables highlighted above are used in The Next Big Thing application and will be referred to over the course of this blog.''')
+
+    st.markdown('''Reddit proved to be quite a challenging data environment to learn with respect to its APIs. We quickly found that there 
+        are MANY ways to access the data: simple requests.get, [PRAW](https://praw.readthedocs.io/en/latest/getting_started/quick_start.html), 
+        [pushshift.io](https://github.com/pushshift/api), [PSAW](https://github.com/dmarx/psaw), [PMAW](https://github.com/mattpodolak/pmaw#description), 
+        and more. Out-of-date documentation on the 
+        API websites led us astray a few times and made it difficult for us to know the best way for us to access the data. As it turns out, 
+        we ended up using several access options, due to their different features. PRAW was good for finding subreddits and their details and 
+        retrieving submissions for a specific subreddit. When searching for comments that were not directly related to a submission, we 
+        needed a library that used the pushshift.io api as this functionality was not available through PRAW. We ended up using PMAW because it 
+        runs using multiple thread functionality.  There were several resources that helped us figure out how to set up our Reddit account and 
+        begin accessing data that are definitely recommended for someone just starting out:''')
+
+    st.markdown('''
+        - [How to Use Reddit API](https://alpscode.com/blog/how-to-use-reddit-api/)
+        - [How to Use the Reddit API in Python](https://towardsdatascience.com/how-to-use-the-reddit-api-in-python-5e05ddfd1e5c)
+        - [How to Collect a Reddit Dataset](https://towardsdatascience.com/how-to-collect-a-reddit-dataset-c369de539114)
+        - [How to use Reddit API With Python (Pushshift)](https://www.jcchouinard.com/how-to-use-reddit-api-with-python/)
+        - [Reddit API Documentation](https://www.reddit.com/dev/api)''')
+
+    st.markdown('''While learning about the different APIs, we were dismayed to find that pushshift aggregate functions were 
+    removed in late 2020. Aggregates would have been extremely helpful for us in our subreddit selection step as well as our influencer 
+    selection step. The loss of these functions meant that we had to pull back the data we could and aggregate it ourselves. We 
+    were able to do some of this, but not at the level that the pushshift aggs would have allowed. 
+    ''')
+
+    st.subheader('Wikipedia')
+
+    st.markdown('''[Wikipedia](https://github.com/goldsmith/Wikipedia) - this library was used for a simple search of Wikipedia articles, and for 
+    pulling back the article summary and full text. One benefit of this library was the DisambiguationError it threw, which 
+    allowed us to know if we were working with a valid Wikipedia article or not. 
+    ''')
+
+    st.markdown('''[Wikipedia API](https://github.com/martin-majlis/Wikipedia-API) - this library was used to be able to get all members of a Wikipedia category
+    ''')
+
+    st.markdown('''[Pywikibot](https://www.mediawiki.org/wiki/Manual:Pywikibot) - this library was used to retrieve and filter out non-hidden categories that an 
+    article belonged to. These categories were very important for us, as our project relies on the hierarchy built into Wikipedia. 
+    ''')
+
+    st.subheader('Natural Language Processing')
+    
+    st.markdown('''[Stanza](https://stanfordnlp.github.io/stanza/) - This is a python library from Stanford containing many NLP tools. We used 
+    it for dependency parsing and part-of-speech tagging. 
+    ''')
+
+    st.markdown('''[Sentence Transformers](https://www.sbert.net/) - This is a python library that we used for creating sentence vectors so 
+    that we could compare closeness of phrases and sentences with cosine similarity  . We loaded a small huggingface model ([all-MiniLM-L6-v2](https://www.sbert.net/docs/pretrained_models.html) )
+    ''')
+
+    st.subheader('Conditional Random Field (CRF)')
+
+    st.markdown('''[Pycrfsuite](https://github.com/scrapinghub/python-crfsuite) - This python library was used to create a CRF model 
+    that we used for tagging words as either being in the same category as our Thing, or not. 
+    ''')
+
+    st.subheader('Fuzzy Matching')
+
+    st.markdown('''[Rapidfuzz](https://github.com/maxbachmann/RapidFuzz) - This is a library we attempted to use to find known items from a whitelist 
+    in unseen text, but worked poorly for our application. 
+    ''')
+
+    st.subheader('Visualization')
+
+    st.markdown('''[Graphviz](https://graphviz.org/) - We used this library to show the dependency structure of sentences 
+    after they were parsed, what we refer to as our “star chart”. 
+    ''')
+
+    st.markdown('''[Wordcloud](https://amueller.github.io/word_cloud/) - We used this library for the final output. It 
+    allowed for the ability to add a shape within which to enclose the results, as well as the ability to manipulate the colors shown. 
+    Snoo says hello! 
+    ''')
+
+    
+    #############################################################
+    st.header("Step 1: Find Category from Thing")
+
+    st.subheader("Input: Identifying 'The Thing'")
 
     st.markdown('''In our application, the user chooses a specific item that he or she has some interest in. For example, if you are a big 
     fan of “Squid Game”, a South Korean TV series on Netflix, you would enter “Squid Game”. The item should definitely be specific, 
     because we are going to try to find things like “Squid Game” for you, such as “Twenty-Five Twenty-One”, another South Korean TV Series. 
     If you were to enter “tv series”, then our application will look for other things like “tv series”, such as “podcasts” or “miniseries”. 
     In other words, our tool is made to look for “siblings” of The Thing you enter.''')
-
-    st.header("Step 1: Find Category from Thing")
 
     st.subheader("NLP Category")
 
@@ -297,7 +411,8 @@ else:
     This hierarchy is important for us to be able to traverse, so we can find the right kinds of things. This can also be 
     thought of as a graph, with article nodes attached to multiple category nodes through edges of an “in_Category”-type, for example.
     ''')
-
+    
+    #############################################################
     st.header("Step 2: Find Subreddits")
 
     st.markdown('''Now that we know what categories The Thing belongs to, it’s time to move to Reddit. We need to find the 
@@ -341,9 +456,7 @@ else:
 
     st.markdown('''We built this string:''')
 
-    st.code('''"manga./r/manga: manga, on reddit..Everything and anything manga! (manhwa/manhua 
-        is okay too!) Discuss weekly chapters, find/recommend a new series to read, post a picture 
-        of your collection, lurk, etc!”''')
+    st.markdown('''`"manga./r/manga: manga, on reddit..Everything and anything manga! (manhwa/manhua is okay too!) Discuss weekly chapters, find/recommend a new series to read, post a picture of your collection, lurk, etc!"`''')
 
     
     st.markdown('''and ran cosine similarity between it and each of the best Wikipedia categories identified earlier. 
@@ -379,7 +492,7 @@ else:
         The following chart shows that in 8 of our 10 test cases, using the Category and Term with only 10 
         subreddits returned the highest precision of the four options.''')
 
-    st.image(get_image('subreddit_eval_optimal.png'), caption = None)
+    st.image(get_image('subreddit_eval_v3.png'), caption = None)
 
     st.markdown('''While performing test runs of new search items , we realized that it might be beneficial to search 
     directly on the best Wikipedia categories for The Thing, such as ‘Television shows set in Seoul’. We tested adding 
@@ -387,23 +500,31 @@ else:
     returned was relevant. Our results, seen in the following chart, showed that adding the Wikipedia Categories did 
     not provide better results, so we returned to our original method of using the NLP Categories and the original search term:''')
 
+    st.image(get_image('subreddit_wiki.png'), caption = None)
 
+    st.markdown('''Unfortunately, due to the extremely large number of subreddits, we did not have a good way to calculate 
+    recall or determine which subreddits we were unable to find as part of this evaluation.''')
+
+    #############################################################
     st.header("Step 3: Find Influencers")
 
-    st.markdown('''Once we have our list of relevant subreddits, our next step was to find influential redditors
-                (users of reddit) within those subreddits. We will not be concerned about the Thing in this step
-                 - we will strictly be looking to find the redditors who would be talking about the Next Big Thing.''')
+    st.markdown('''Once we have our list of relevant subreddits, our next step was to find influential Redditors 
+                within those subreddits. We will not be concerned about The Thing in this step
+                 - we will strictly be looking to find the Redditors who would be talking about the Next Big Thing.''')
 
     st.markdown('''When considering how to develop a ranking system for finding these influential Redditors, we wanted to ensure 
     that we were gathering not only Redditors with popular submissions and comments, but also Redditors that were recently active 
-    in the subreddits. Our process for this involves the following steps: \n
+    in the subreddits. Our process for this involves the following steps:''')
+
+    st.markdown('''
     - Pull recent popular submissions from each subreddit
     - Gather all of the comments from each submission
     - Normalize and aggregate scoring for submissions and comments by author
     - Return list of ranked authors by scoring
-    - Gather Top 250 ranked authors Karma Scores''')
+    - Gather Top 250 ranked authors Karma Scores
+    ''')
 
-    st.markdown('''For this step we will be working with PRAW: The Python Reddit API Wrapper (https://praw.readthedocs.io/) in order to gather all of the 
+    st.markdown('''For this step we will be working with [PRAW: The Python Reddit API Wrapper](https://praw.readthedocs.io/) in order to gather all of the 
     necessary information. For our first step in finding influencers, we will use PRAW’s subreddit class to pull submissions 
     from each of our relevant subreddits identified in Step 2. The submissions are able to be gathered using a few different 
     methods like “hot”, “new”, or “top”. If you are familiar with Reddit, you will see that these appear at the top of the page.''')
@@ -423,8 +544,7 @@ else:
 
     st.markdown('''Each of the submissions that we pull back have the author and the score for each post that we are going to utilize in 
     our next steps for ranking our influencers. “Score” in Reddit terms is the net of upvotes and downvotes - this is the same for both 
-    comments and submissions.  The full list of submission attributes available from PRAW can be found here:
-     https://praw.readthedocs.io/en/stable/code_overview/models/submission.html''')
+    comments and submissions.  The full list of submission attributes available from PRAW can be found [here](https://praw.readthedocs.io/en/stable/code_overview/models/submission.html)''')
 
     st.markdown('''Once we have retrieved our list of 50 submissions from each subreddit (500 in total) we now need to gather the comments 
     from each of the submissions. In our early attempts and inexperience working with PRAW, we were doing this in a separate request. 
@@ -455,7 +575,7 @@ else:
     st.markdown('''In our analysis of our chosen authors, we looked at Reddit’s “ranking” for its users (known as Karma) as a way to evaluate 
     how well we captured influencers. Karma is essentially the same as what a score is for submissions and comments, upvotes and downvotes, but 
     instead of scoring one item, it is scoring the user as a whole. In our evaluation, we checked to see if the users that we had identified were 
-    within the top 1,000 for comment Karma. This website (https://www.karmalb.com) has a good tool that you can use to see rankings of Redditors over time. At present, to 
+    within the top 1,000 for comment Karma. This [website](https://www.karmalb.com) has a good tool that you can use to see rankings of Redditors over time. At present, to 
     rank in the top 1%, your Karma score would have to be approximately 24,000. To rank in the Top 10%, your Karma score would have to be 758.  
     The table below presents our top 250 scoring list to see how many influencers were within the top 1% and 10% of Redditors based on Comment Karma 
     rankings. From what you can see in the table, the results can vary - this is due to the popularity of the relevant subreddits. Our lowest count 
@@ -468,15 +588,86 @@ else:
     comments and submissions in Step 4 for our analysis, so we decided to alter our influencer list to include up to 125 authors and incorporate 
     influencer Comment Karma into our selection of authors. Our final ranking of authors balances overall Reddit popularity, individual submission/post 
     scoring (which inherently weights on a user’s activity within subreddits), and representation from each relevant subreddit. The makeup of our 125 
-    influencers includes: \n
+    influencers includes:''')
+
+    st.markdown('''
     - Top 50 ranked by Karma chosen from Top 250 authors based on submission/post scoring
     - Top 25 ranked by our author scoring algorithm (as described above) from remaining author list
     - Top 5 ranked by our author scoring algorithm from each of our 10 relevant subreddits from remaining author list
     - To be considered, authors must have posted a minimum of 2 times in the past month.''')
 
-    st.header("Step 4: Find Influencer Relevevant Posts")
+    #############################################################
+    st.header("Step 4: Find Influencer Relevant Posts")
 
+    st.markdown('''Once we know who our influential Redditors are within our relevant subreddits, we go back to those 
+        subreddits and pull EVERYTHING they have had to say in the last month so that we can analyze it further. These 
+        are the people who we believe are not only talking about The Next Big Thing, but also influencing others to 
+        think about it, so we want all of their data. To get their data, we used the Pushshift API via the PMAW library 
+        to pull all submissions for each influential user for each relevant subreddit in the last 30 days. Separately, 
+        we pulled all comments made by each influential user for each relevant subreddit in the last 30 days. The 
+        submissions stand on their own as to what they refer to, but in order to give the comments context, we took 
+        the parent id for the comment and used the PRAW subreddit submission method to pull back the title of the 
+        original submission that was being commented on. We concatenated the submission title and the body of the 
+        comment together into the Comment Title and Body in place of the original comment.''')
 
+    st.markdown('''We decided to use cosine similarity in order to be able to choose the most relevant posts and to 
+    limit the data to a reasonable amount to pass to the next part of the pipeline. The first step was to figure out 
+    which data we should compare our Comment Title and Body to in order to determine relevance. We tried 4 approaches 
+    by running cosine similarity between the Comment Title and Body and each of the following, and returned a relevance 
+    ranking for each:''')
+
+    st.markdown('''
+        - Wikipedia Categories: We used the SentenceTransformer library to encode the Comment Title and Body, as well as each of the Wikipedia categories retrieved in Step 1, and took the average cosine similarity over all categories
+        - Wikipedia Summary: We used the Sentence Transformer library to encode the Comment Title and Body, as well as the first paragraph from the Wikipedia page for The Thing, and calculated cosine similarity between the two
+        - Wikipedia Articles - CountVectorizer: We trained an sklearn CountVectorizer with all of the text from the first 100 articles found for each Wikipedia Category for The Thing and used it to create an average article vector. We then transformed the Comment Title and Body using the trained CountVectorizer and calculated cosine similarity between the Comment Title and Body vector and the average article vector
+        - Wikipedia Articles - TfidfVectorizer: We trained an sklearn TfidfVectorizer with all of the text from the first 100 articles found for each Wikipedia Category for The Thing and used it to create an average article vector. We then transformed the Comment Title and Body using the trained TfidfVectorizer and calculated cosine similarity between the Comment Title and Body vector and the average article vector
+        ''')
+
+    st.markdown('''To determine which of the above 4 methods would provide the most relevant ranking by cosine similarity, 
+        we ran 387 Squid Game comments returned by several influential users through each of the 4 cosine similarity 
+        calculations. We then manually evaluated whether each comment was relevant based on whether it mentioned a 
+        television series other than Squid Game.''')
+
+    st.markdown('''Here is a sample of the data and ranking:''')
+
+    rank_dict = {'Comment Title and Body':["[REQUEST] tv shows similar to Mcmafia. I watched it recently on AMC+. Avoided it for so long because of the name, surprisingly ended up really enjoying it. I loved the international feeling of it. Can't wait for season 2.",
+    "[REQUEST] Need more shows Like Severance, Homecoming Season 1, Maniac, Loki. I think you will love Mr Robot. One of the greatest thrillers of all-time.", 
+    "[Request] what are your favorite whodunnit TV shows?. Season 3 is 10/10 imo. Season 2 is meh though."],
+        'Wikipedia Categories Rank':[1,14,26],
+        'Wikipedia Summary Rank':[76,108,79],
+        'Wikipedia Articles CountVectorizor Rank':[61,19,6],
+        'Wikipedia Articles TfidfVectorizer Rank':[109,21,3],
+        'Relevant?':[1,1,0],
+        }
+
+    
+    rank_df = pd.DataFrame(rank_dict)
+    rank_df = rank_df.set_index('Comment Title and Body').rename_axis('Comment Title and Body', axis = 1)
+    #rank_df.index.name = 'Comment Title and Body'
+    st.table(rank_df)
+
+    st.markdown('''We then used the manual ranking to calculate precision and recall at N for N at 25, 50, 100, 150, 
+        200, 250 and 300. For all levels of N the Wikipedia Categories Rank had the highest values for both precision 
+        and recall, indicating that this was the best choice to use for our relevant post ranking.''')
+
+    st.markdown('''The following table shows Precision and Recall for N@50:''')
+
+    st.image(get_image('comment_cosine_sim.png'))
+    
+    st.markdown('''When it was time to scale our project to production size by increasing the number of influential users, 
+        the number of comments retrieved increased dramatically. We found that using the PRAW API to retrieve the 
+        submission title for each comment was prohibitively slow. We compared the final results (see Step 5 for discussion 
+        of final results) of only retrieving the title if the comment was less than 6 words, less than 10 words, and simply 
+        always using the comment on its own. In the end, we found that adding the title did not substantially improve the 
+        results, so we decided to use the comment body text on its own for the final step of the process.''')
+
+    st.markdown('''We also tested various numbers of posts to send to Step 5 that would provide enough comments to produce 
+        the best results, but not so many that would cause the processing to be slow or simply fail due to memory issues. 
+        Our testing results showed that 10,000 posts best managed both of these requirements. If Step 4 results in more than 
+        10,000 posts, then the ranking generated by running average cosine similarity between the post and each of the 
+        Wikipedia Categories is used to limit the result set to the top 10,000.''')
+
+    #############################################################
     st.header("Step 5: Find Next Big Thing")
 
     st.subheader('Conditional Random Field')
@@ -525,8 +716,17 @@ else:
     st.markdown('''Once we had built a trained tagger to tag individual words, we tested it on a 20% sized test set. Because of the imbalance, the 
     returned precision and recall was always at least 99% for N’s. Our target was the Y’s, and here precision and recall was 
     lower. Precision and recall was as low as 70%/53% respectively for mentions of things like Elon Musk and IPhone, but 
-    got as high as 90%/86% respectively for Catan, the board game.
+    got as high as 90%/86% respectively for Catan, the board game. Accuracy scores for Squid Game are shown below.
     ''')
+    
+    df_prec_rec = {'Class':['N', 'Y'],
+    'Precision':[1.0, .8],
+    'Recall':[1.0, .61],
+    'F1 Score':[1.0, .69],
+    'Support':[124866, 1436],
+    }
+    df_prec_rec = pd.DataFrame(df_prec_rec)    
+    st.table(df_prec_rec)
 
     st.subheader('Classification')
 
@@ -537,43 +737,176 @@ else:
     instead of one for each category. Parsing and labeling each unseen Reddit post turned out to be quite time consuming, but 
     classifying wasn’t too bad. Once we had every word labeled, we went back to extract and collect phrases that were labeled with 
     a ‘Y’. ''')
+
+    st.markdown('''As can be seen from some of the sample entities and sentences in which they were found, results were mixed. Despite 
+    'Search' being an actual South Korean TV show, none of the instances found were used as such. 'Kingdom' and 'Twenty - Five Twenty - One'
+    had better luck.
+    ''')
+
+    st.markdown('''
+    Good results:
+    - Found: `Kingdom` in: 'If anyone likes war anime, I recommend people to try out *Kingdom* atleast.'
+    - Found: `Twenty - Five Twenty - One` in: 'I was also watching **Twenty-Five Twenty-One** and is has some of the best confession scenes.'
+    Poor results:
+    - Found: `Search ME!ME!ME !` in: 'Search ME!ME!ME! on YouTube.'
+    - Found: `Now I` in: 'Now I can't wait for the sequel.'
+    ''')
     
     
     st.markdown('''For a comparison, we also looked for exact matches of each of the CRF-found matches, as well as exact matches from 
     the original whitelist of article titles we saved back in Step 1. The original whitelist missed many, as we had expected, 
     but the exact CRF whitelist match did find mentions that the model did not. We ended up using the exact CRF whitelist 
     match as a number with which to calculate recall for phrases found with CRF. The final output of this step was a 
-    dataframe with a column representing the found Entities, as well as counts for the number of times each was found in the unseen posts.
+    dataframe(seen below) with a column representing the found Entities, as well as counts for the number of times each was found in the unseen posts.
     ''')
 
 
-
-    df = pd.read_csv( Path(__file__).parents[1] / 'streamlit/example_output/crf_results_Squid_Game.csv')
-    # CSS to inject contained in a string
-    hide_dataframe_row_index = """
-                <style>
-                .row_heading.level0 {display:none}
-                .blank {display:none}
-                </style>
-                """
-
-    # Inject CSS with Markdown
-    st.markdown(hide_dataframe_row_index, unsafe_allow_html=True)
-
+    df = pd.read_csv( Path(__file__).parents[1] / 'streamlit/example_output/crf_results_Squid_Game.csv').set_index('Entity', inplace=False)
+    df.index.name = 'Entity'
+    df.columns = ['CRF Found', 'CRF Exact', 'Original Whitelist Exact', 'CRF Recall']
     st.dataframe(df)
+    st.markdown('''Columns can be sorted by clicking the headings.''')
+    
+    #############################################################
+    st.header("Results/Findings")
+
+    st.markdown('''Our original project goal was to find the “Next Big Thing”. As part of this, we made an assumption that we would 
+    find new siblings for The Thing. In many cases we were able to pinpoint what Redditors were talking about in the parent/category 
+    of The Thing, but it wasn’t necessarily new. For example, searching for the Next Big Thing for the Beastie Boys, a 1980s rap/hip 
+    hop group returned top results such as The Streets and D12, which are both relevant in that they are a rap and hip hop group 
+    respectively, but they are not new. 
+    ''')
+
+    st.markdown('''We also saw many situations where the sibling found isn’t necessarily new, but is back in the spotlight. For 
+    example, the #2  result for Beastie Boys is Dope, a Dutch hip hop band, which initially became popular in 2011, but they 
+    released a new album at the end of 2021 and are currently on tour.
+    ''')
+
+    st.markdown('''Here’s a look at how we did over our 10 test cases. Each team member reviewed the top 10 results for each 
+    test case and evaluated whether the result was a sibling of the original item, and whether the result could be considered new. 
+    To be new, the result had to either be introduced in 2022, or re-emerge in 2022, such as a new album release for a known artist. 
+    ''')
+
+    st.image(get_image('final_results.png'))
+
+    st.markdown('''We see some mixed results. Our precision at 10 for relevant siblings was over 70% for seven of our items. 
+    However, we didn’t do as well in finding new items. For newness, our precision at 10 ranged between 0 and 50%. Based on 
+    this we find that using our process as it is now, we can definitely see what Reddit users are currently talking about that 
+    are like our original Thing, but we can not differentiate new items from previously existing items.
+    ''')
+
+    st.markdown('''Because Wikipedia was our reference data source for the project, our results were obviously heavily 
+    dependent on its contents. This was especially true in the Wikipedia categories, which led to some unexpected results. 
+    For example, when we proposed Beastie Boys as a Thing, we were looking for the Next rap or hip hop group. In early testing, 
+    two of our top 10 results were Fun and Blondie, which are pop and rock bands respectively. ''')    
+
+    st.markdown('''
+    After filtering the Wikipedia categories for Beastie Boys we had the following results:
+    - Hip hop groups from New York City
+    - Alternative hip hop groups
+    - Musical groups from New York City
+    - Rap rock groups
+    - Hardcore hip hop groups
+    ''')
+
+    st.markdown('''Fun and Blondie were included in our results because they fall into the Wikipedia Category “Musical groups from 
+    New York City”. Our pipeline does not currently apply any weights to categories, or prioritize one over another, so we were 
+    equally as likely to find a subreddit about New York City music as we were about rap music. In order to solve this problem, 
+    we might need to add a layer of user feedback where we ask the user to select the specific category of interest in regards 
+    to The Thing. 
+    If we had this information, we could use it several ways:
+- We could incorporate it in choosing relevant subreddits by prioritizing those subreddits that have a closer cosine similarity to the selected category
+- We could train our CRF model with more data from the selected category when possible
+    ''')
+
+    st.markdown('''One issue we found in our results is identifying an item as relevant not because it is actually relevant, 
+    but because it is a common word that is also a sibling item. For example, our top result for Squid Game was ‘SEARCH’. Search is 
+    a South Korean television series that aired in 2020. Based on this, we all evaluated this as a relevant result. However upon 
+    further inspection of the Squid Game Reddit posts, we found that the reason that ‘SEARCH’ appeared so much was because the word 
+    ‘search’ was found in many website links found in the posts. This is a situation that could occur with other common words and 
+    should be considered in future modifications to our tool.
+    ''')
+
+
+    #############################################################
 
     st.header('Ideas for Next Steps/Improvements')
 
+    st.subheader('Exclude Bots')
+
+    st.markdown('''We don’t know how many of our posts were created by marketers as opposed to a user providing their own individual opinions 
+    and ideas, and the distinction could change our results drastically.Exclude bots would be a great improvement, although finding them
+    is apparently a difficult task.  There are programs where people use machine learning to try to determine if a user is a bot based on 
+    features like comment karma and link karma. There is a subreddit called r/botwatch that discusses this type of analysis. 
+    ''')
+
+    st.subheader('Improve Subreddit Search Process')
+
+    st.markdown('''The subreddits identified for analysis are the most critical step in the process in terms of finding relevant 
+    “sibling” items. If we are not looking in the best subreddits, we will not find the current chatter about The Thing and its 
+    siblings. Unfortunately, the use of the subreddit search is really a black box for us - we don’t know exactly what it is 
+    doing as we were unable to find information on the algorithm. However we did see that the search results returned to us 
+    changed frequently, implying that it is considering recent posts. Also, we confirmed that the majority subreddits we 
+    selected had activity within 3 days - 98% of the 100 subreddits we tested. Ideally, we would build our own search algorithm 
+    so that we better understand which subreddits are coming back to us.
+    ''')
+
+    st.subheader('Provide Results By Category')
+
+    st.markdown('''For more specificity we could consider returning our results in individual categories, instead of groups of
+    categories as we are doing currently. Training on true siblings per 
+    category instead of all together should improve the model as well. An improvement might be to add a check for the number 
+    of articles in each category, and if a certain threshold wasn’t met, then we then combine articles in categories, 
+    otherwise train on each category separately.
+    ''')
+
+    st.subheader('Evaluate Next Big Thing Over Time')
+
+    st.markdown('''As we kept running our results, we noticed them change over the course of a few days. It was 
+    interesting to see how changes in conversations in the community were directly visible in these results. One improvement would be 
+    to  track the Top 10 results for a query over time, to see how interest in them rises and falls.
+    ''')
+
+    st.subheader('Add Coreference Resolution')
+
+    st.markdown('''Another improvement would be to add a coreference resolution step before training to increase the 
+    number of mentions of the Thing in Wikipedia. We’re doing an exact match for mentions of the Entities found through 
+    CRF in the labeling step, but there are many pronouns that are not found, and this would help with the 
+    imbalance in the data. We could also find other sources of training data with mentions of things like The Thing, 
+    as Wikipedia text is more formal than that which people use in Reddit.''')
+
+    st.subheader('Explore New Ways for Finding Influential Users')
+
+    st.markdown('''We took a user popularity approach for finding influential users. Another interesting way to approach this problem 
+    might be to first find the people who were earliest 
+    to The Thing, and search for their current posts to see what they are talking about today. This approach would make the assumption 
+    that these users are always early to a subject, that is they are usually on top of new trends, influencing others just as they’re starting.''')
+
+    st.subheader('Incorporate Other Languages')
+
+    st.markdown('''It would be interesting to work with languages other than English, but we would need to change our 
+    NLP rules, and find a source of posts that we could analyze. Along the lines of another source of data, we believe 
+    that our model would improve if our training data was closer in actual usage to Reddit. Wikipedia is more formal text, 
+    and so it is missing some context that is present in informal Reddit text.''')
+
+
+
+
+    #############################################################
+
     st.header("Statement of Work")
 
-    st.markdown('''**_Kim Di Camillo_** - Co-authored the idea for the Next Big Thing and created the initial high level project design; 
-    Designed, developed, tested, and evaluated Step 2: Find Relevant Subreddits, and Step 4: Find Relevant Influential User Posts; wrote 
-    the project readme file; Handled general project management tasks to keep the team on schedule and ensure we included all required 
+    st.markdown('''**_Kim Di Camillo_** co-authored the idea for the Next Big Thing and created the initial high level project design. She 
+    designed, developed, tested, and evaluated Step 2: Find Relevant Subreddits, and Step 4: Find Relevant Influential User Posts. Kim wrote 
+    the project readme file and handled general project management tasks to keep the team on schedule and ensure we included all required 
     components in our deliverables. ''')
     
-    st.markdown('''**_Oleg Nikolsky_** - Co-authored the idea for the Next Big Thing and created the initial high level project design; 
-    Designed, developed, tested, and evaluated Step 1: Find Category from Thing, and Step 5: CRF Find New Terms; setup and
-    maintained project GitHub; ''')
+    st.markdown('''**_Oleg Nikolsky_** co-authored the idea for the Next Big Thing and investigated the more complicated technical components 
+    such as sentence parsing and labeling, and the CRF model training. He designed, developed, tested, and evaluated Step 1: Find Category from Thing, and Step 5: CRF 
+    Find New Terms. Oleg set up and maintained the project GitHub. ''')
     
-    st.markdown('''**_Cody Crow_** - Designed, developed, tested Step 3: Finding Influencers, Drafted final project video presentation
-    and coordinated recording and production of final video, created intitial instance of streamlit and blog outline.''')
+    st.markdown('''**_Cody Crow_** designed, developed, tested, and evaluated Step 3: Finding Influencers.  He drafted the final project video 
+    presentation and coordinated recording and production of the final video. Cody created the intitial Streamlit instance and 
+    the blog outline.''')
+
+    #############################################################
