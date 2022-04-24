@@ -27,18 +27,18 @@ mode = st.sidebar.radio(
 
 # Table of contents for navigation
 
-
-st.sidebar.markdown("Navigation")
-st.sidebar.markdown("[Introduction](#introduction)", unsafe_allow_html=True)
-st.sidebar.markdown("[Tools](#tools)", unsafe_allow_html=True)
-st.sidebar.markdown("[Step 1 - Find Category from Thing](#step-1-find-category-from-thing)", unsafe_allow_html=True)
-st.sidebar.markdown("[Step 2 - Find Subreddits](#step-2-find-subreddits)", unsafe_allow_html=True)
-st.sidebar.markdown("[Step 3 - Find Influencers](#step-3-find-influencers)", unsafe_allow_html=True)
-st.sidebar.markdown("[Step 4 - Find Their Relevant Posts](#step-4-find-influencer-relevant-posts)", unsafe_allow_html=True)
-st.sidebar.markdown("[Step 5 - Find the Next Big Thing](#step-5-find-the-next-big-thing)", unsafe_allow_html=True)
-st.sidebar.markdown("[Results/Findings](#results-findings)", unsafe_allow_html=True)
-st.sidebar.markdown("[Ideas for Next Steps/Improvements](#ideas-for-next-steps-improvements)", unsafe_allow_html=True)
-st.sidebar.markdown("[Statement of Work](#statement-of-work)", unsafe_allow_html=True)
+if mode == "Blog":
+    st.sidebar.markdown("Navigation")
+    st.sidebar.markdown("[Introduction](#introduction)", unsafe_allow_html=True)
+    st.sidebar.markdown("[Tools](#tools)", unsafe_allow_html=True)
+    st.sidebar.markdown("[Step 1 - Find Category from Thing](#step-1-find-category-from-thing)", unsafe_allow_html=True)
+    st.sidebar.markdown("[Step 2 - Find Subreddits](#step-2-find-subreddits)", unsafe_allow_html=True)
+    st.sidebar.markdown("[Step 3 - Find Influencers](#step-3-find-influencers)", unsafe_allow_html=True)
+    st.sidebar.markdown("[Step 4 - Find Their Relevant Posts](#step-4-find-influencer-relevant-posts)", unsafe_allow_html=True)
+    st.sidebar.markdown("[Step 5 - Find the Next Big Thing](#step-5-find-the-next-big-thing)", unsafe_allow_html=True)
+    st.sidebar.markdown("[Results/Findings](#results-findings)", unsafe_allow_html=True)
+    st.sidebar.markdown("[Ideas for Next Steps/Improvements](#ideas-for-next-steps-improvements)", unsafe_allow_html=True)
+    st.sidebar.markdown("[Statement of Work](#statement-of-work)", unsafe_allow_html=True)
 
 
 st.sidebar.markdown('##')
@@ -226,7 +226,7 @@ else:
     ''')
 
     st.markdown('''[Sentence Transformers](https://www.sbert.net/) - This is a Python library that we used for creating sentence vectors so 
-    that we could compare closeness of phrases and sentences with cosine similarity  . We loaded a small huggingface model ([all-MiniLM-L6-v2](https://www.sbert.net/docs/pretrained_models.html) ).
+    that we could compare closeness of phrases and sentences with cosine similarity  . We loaded a small Hugging Face model ([all-MiniLM-L6-v2](https://www.sbert.net/docs/pretrained_models.html) ).
     ''')
 
     st.subheader('Conditional Random Field (CRF)')
