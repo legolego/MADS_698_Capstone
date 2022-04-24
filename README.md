@@ -3,6 +3,8 @@
 
 Capstone project for University of Michigan's Master of Applied Data Science program created by Cody Crow, Kim Di Camillo and Oleg Nikolsky. Given a user-entered item, the tool mines Reddit data to identify what popular Redditors are currently discussing that are "like" the original item.
 
+Click [here](https://drive.google.com/file/d/1mhLgTV_9JM9dFPOpGEI9kR0NEe7a_HMX/view?usp=sharing) for an overview video about our project.
+
 # Getting Started
 ### Clone the repo
 Clone this repository to get started.
